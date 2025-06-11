@@ -2,6 +2,43 @@
 
 A game where you clash with style!
 
+## Setup
+
+1. Clone the repository:
+  ```bash
+  git clone https://github.com/yourusername/css_clash.git
+  cd css_clash
+  ```
+
+2. Create a `.envrc` file with the following content:
+  ```env
+  use flake nix/.
+  ```
+
+3. Create a `.env` file with the following content:
+  ```env
+  SECRET_KEY_BASE=[random_string]
+  DB_USER=postgres
+  DB_PASSWORD=postgres
+  DB_NAME=css_clash
+  DATABASE_URL=localhost
+  ```
+
+4. Boot up the db using docker:
+  ```bash
+  docker-compose up db -d
+  ```
+
+5. Run setup command:
+  ```bash
+  mix setup
+  ```
+
+6. Start the server:
+  ```bash
+  mix phx.server
+  ```
+
 ## Development Roadmap
 
 ### Gameplay loop
