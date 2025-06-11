@@ -1,0 +1,50 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: infra/app.dockerfile
+    ports:
+      - "4000:4000"
+    restart: unless-stopped
+    environment:
+      DB_USER: ${DB_USER:-postgres}
+      DB_PASSWORD: ${DB_PASSWORD:-postgres}
+      DB_PORT: 5432
+      DB_HOST: db
+      DATABASE_URL: postgres://${DB_USER:-postgres}:${DB_PASSWORD:-postgres}@db:5432/${DB_NAME:-css_clash}
+    depends_on:
+      db:
+        condition: service_healthy
+        restart: true
+    links:
+      - db
+    env_file: ".env"
+
+  db:
+    build:
+      context: .
+      dockerfile: infra/db.dockerfile
+    container_name: css_clash_postgres
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - PGDATA=${PGDATA:-/var/lib/postgresql/data/pgdata}
+      - POSTGRES_DB=${DB_NAME:-css_clash}
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${DB_USER:-postgres} -d ${DB_NAME:-css_clash}",
+        ]
+      interval: 10s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
+
+volumes:
+  pgdata:

@@ -1,0 +1,13 @@
+FROM postgres:17
+
+ARG DB_NAME="css_clash"
+ARG DB_USER="postgres"
+ARG DB_PASSWORD="postgres"
+ARG PGDATA="/var/lib/postgresql/data/pgdata"
+
+ENV POSTGRES_DB=$DB_NAME
+ENV POSTGRES_PASSWORD=$DB_PASSWORD
+ENV POSTGRES_USER=$DB_USER
+ENV PGDATA=$PGDATA
+
+CMD ["postgres"]
