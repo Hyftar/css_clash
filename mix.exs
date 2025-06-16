@@ -59,7 +59,8 @@ defmodule CssClash.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
-      {:hackney, "~> 1.9"}
+      {:hackney, "~> 1.9"},
+      {:wallaby, "~> 0.30"}
     ]
   end
 

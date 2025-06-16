@@ -18,6 +18,8 @@ defmodule CssClashWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+
+    get "/html_render", HtmlRenderController, :render_html
   end
 
   # Other scopes may use custom stacks.
