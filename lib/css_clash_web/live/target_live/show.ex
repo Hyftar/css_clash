@@ -23,6 +23,14 @@ defmodule CssClashWeb.TargetLive.Show do
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash}>
+      <.button
+        id="confetti-button"
+        variant="primary"
+        phx-click={JS.dispatch("css_clash:confetti")}
+        phx-hook="ConfettiHook"
+      >
+        Confettis! 🎉
+      </.button>
       <.live_component id="game-display-container" module={CssClashWeb.Components.GameDisplay} />
     </Layouts.app>
     """
