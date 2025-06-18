@@ -7,13 +7,18 @@ defmodule CssClash.Targets.Target do
     field :image_data, :binary
     field :colors, {:array, :string}, default: []
 
+    has_many :submissions, CssClash.Targets.Submission
+
     timestamps(type: :utc_datetime)
   end
+
+  @required_fields [:name, :image_data]
+  @optional_fields [:colors]
 
   @doc false
   def changeset(target, attrs) do
     target
-    |> cast(attrs, [:name, :image_data, :colors])
-    |> validate_required([:name, :image_data, :colors])
+    |> cast(attrs, @required_fields ++ @optional_fields)
+    |> validate_required(@required_fields)
   end
 end

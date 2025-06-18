@@ -5,12 +5,35 @@ defmodule CssClashWeb.Components.GameDisplay do
     socket =
       socket
       |> assign(id: UUID.uuid4())
+      |> assign(diff_mode: true)
+      |> assign(target: assigns.target)
       |> assign(colors: Stream.repeatedly(&random_color/0) |> Enum.take(4))
 
     {:ok, socket}
   end
 
   def handle_event("submit", %{"html" => html, "css" => css}, socket) do
+    {:noreply, socket}
+  end
+
+  def handle_event("save_progress", %{"html" => html, "css" => css}, socket) do
+    IO.inspect({html, css}, label: "Saved Progress")
+    {:noreply, socket}
+  end
+
+  def handle_event("toggle_diff_mode", %{"value" => "on"}, socket) do
+    socket =
+      socket
+      |> assign(diff_mode: true)
+
+    {:noreply, socket}
+  end
+
+  def handle_event("toggle_diff_mode", _params, socket) do
+    socket =
+      socket
+      |> assign(diff_mode: false)
+
     {:noreply, socket}
   end
 
@@ -31,6 +54,7 @@ defmodule CssClashWeb.Components.GameDisplay do
           <div
             id={"html-editor-#{@id}"}
             phx-hook="CodeMirrorHook"
+            phx-update="ignore"
             data-lang="html"
             data-editor-for={"game-display-#{@id}"}
             class="min-h-32 grow-0 overflow-y-auto"
@@ -44,6 +68,7 @@ defmodule CssClashWeb.Components.GameDisplay do
           <div
             id={"css-editor-#{@id}"}
             phx-hook="CodeMirrorHook"
+            phx-update="ignore"
             data-lang="css"
             data-editor-for={"game-display-#{@id}"}
             class="min-h-32 grow-0 overflow-y-auto"
@@ -52,26 +77,46 @@ defmodule CssClashWeb.Components.GameDisplay do
         </div>
       </section>
       <section class="flex flex-col items-center grow-1 gap-4">
-        <iframe
-          id="game-render"
-          data-render-for={"game-display-#{@id}"}
-          sandbox=""
-          class="min-w-[500px] min-h-[500px]"
-          width="500px"
-          height="500px"
-        >
-        </iframe>
+        <div>
+          <input
+            id="diff-mode"
+            type="checkbox"
+            checked={@diff_mode}
+            phx-click="toggle_diff_mode"
+            phx-target={@myself}
+          />
+          <label for="diff-mode">Diff Mode</label>
+        </div>
+        <div id="render-preview" class="relative">
+          <img
+            :if={@diff_mode}
+            class="min-w-[500px] min-h-[500px] absolute top-0 left-0 mix-blend-difference"
+            src={"data:image/jpeg;base64,#{Base.encode64(@target.image_data)}"}
+            width="500px"
+            height="500px"
+          />
+          <iframe
+            id="game-render"
+            data-render-for={"game-display-#{@id}"}
+            sandbox=""
+            class="min-w-[500px] min-h-[500px]"
+            width="500px"
+            height="500px"
+            phx-update="ignore"
+          >
+          </iframe>
+        </div>
         <div class="flex flex-col gap-4 grow-1 w-full">
           <div class="flex justify-center flex-wrap gap-2">
             <div
-              :for={{color, index} <- @colors |> Stream.with_index()}
+              :for={{color, index} <- @target.colors |> Stream.with_index()}
               id={"color-#{index}"}
               class="text-xs flex items-center gap-2 py-1 px-3
                 rounded-full bg-neutral text-slate-200 cursor-pointer
                 hover:brightness-125"
-              phx-hook="CopyTextHook"
               phx-click="copied"
               phx-value-color={color}
+              phx-hook="CopyTextHook"
               data-copy-text={color}
             >
               <span
@@ -79,7 +124,7 @@ defmodule CssClashWeb.Components.GameDisplay do
                 style={"background-color: #{color}"}
               >
               </span>
-              <span class="mb-0.5 min-w-18">{color}</span>
+              <span class="mb-0.5 min-w-12">{color}</span>
               <.icon name="hero-clipboard-document-list-solid" />
             </div>
           </div>

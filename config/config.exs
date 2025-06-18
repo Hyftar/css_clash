@@ -7,6 +7,19 @@
 # General application configuration
 import Config
 
+config :css_clash, :scopes,
+  user: [
+    default: true,
+    module: CssClash.Accounts.Scope,
+    assign_key: :current_scope,
+    access_path: [:user, :id],
+    schema_key: :user_id,
+    schema_type: :id,
+    schema_table: :users,
+    test_data_fixture: CssClash.AccountsFixtures,
+    test_login_helper: :register_and_log_in_user
+  ]
+
 config :css_clash,
   ecto_repos: [CssClash.Repo],
   generators: [timestamp_type: :utc_datetime]
@@ -63,7 +76,7 @@ config :phoenix, :json_library, Jason
 
 config :wallaby,
   driver: Wallaby.Chrome,
-  base_url: "http://localhost:4000",
+  base_url: "http://127.0.0.1:4000",
   chromedriver: [
     capabilities: %{
       javascriptEnabled: true,

@@ -1,6 +1,7 @@
 defmodule CssClash.Targets do
-
+  alias CssClash.Repo
   alias CssClash.Targets.Target
+  alias CssClash.Targets.Submission
 
   @doc """
   Returns the list of targets.
@@ -94,5 +95,17 @@ defmodule CssClash.Targets do
   """
   def change_target(%Target{} = target, attrs \\ %{}) do
     Target.changeset(target, attrs)
+  end
+
+  def create_submission(attrs) do
+    %Submission{}
+    |> Submission.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  def update_submission(%Submission{} = submission, attrs) do
+    submission
+    |> Submission.changeset(attrs)
+    |> Repo.update()
   end
 end

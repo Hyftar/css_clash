@@ -3,11 +3,10 @@ defmodule CssClashWeb.TargetLive.Show do
 
   alias CssClash.Targets
 
-  def mount(%{}, _session, socket) do
+  def mount(%{"id" => id}, _session, socket) do
     socket =
       socket
-
-    # |> assign(target: Targets.get_target!(id))
+      |> assign(target: Targets.get_target!(id))
 
     {:ok, socket}
   end
@@ -31,7 +30,11 @@ defmodule CssClashWeb.TargetLive.Show do
       >
         Confettis! 🎉
       </.button>
-      <.live_component id="game-display-container" module={CssClashWeb.Components.GameDisplay} />
+      <.live_component
+        id="game-display-container"
+        module={CssClashWeb.Components.GameDisplay}
+        target={@target}
+      />
     </Layouts.app>
     """
   end

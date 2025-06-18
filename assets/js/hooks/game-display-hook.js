@@ -1,13 +1,18 @@
 export const GameDisplayHook = {
   mounted() {
-    this.gameRenderElement = this.el.querySelector(`[data-render-for=${this.el.id}]`)
+    this.gameRenderElement = this.el.querySelector(`[data-render-for=${this.el.id}]`);
+
     this.documentState = {
       html: '',
       css: ''
-    }
+    };
 
-    window.addEventListener(`${this.el.id}:document-change`, this.onDocumentChange.bind(this))
-    window.addEventListener('css_clash:submit', this.onSubmit.bind(this))
+    this.savedDocument = { ...this.documentState };
+
+    window.addEventListener(`${this.el.id}:document-change`, this.onDocumentChange.bind(this));
+    window.addEventListener('css_clash:submit', this.onSubmit.bind(this));
+
+    window.setInterval(this.saveProgress.bind(this), 3000);
   },
 
   destroyed() {
@@ -32,6 +37,21 @@ export const GameDisplayHook = {
     this.pushEventTo(
       this.el,
       'submit',
+      { html: this.documentState.html, css: this.documentState.css }
+    );
+  },
+
+  saveProgress() {
+    if (this.documentState.html === this.savedDocument.html
+      && this.documentState.css === this.savedDocument.css) {
+      return;
+    }
+
+    this.savedDocument = { ...this.documentState };
+
+    this.pushEventTo(
+      this.el,
+      'save_progress',
       { html: this.documentState.html, css: this.documentState.css }
     );
   },

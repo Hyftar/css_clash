@@ -9,6 +9,7 @@ export const ConfettiHook = {
     window.confetti = new JSConfetti();
 
     window.addEventListener('css_clash:confetti', this.handleConfetti);
+    this.handleEvent('css_clash:confetti', this.handleConfetti)
   },
 
   async handleConfetti() {
@@ -26,9 +27,7 @@ export const ConfettiHook = {
     }
   },
 
-  prefersReducedMotion() {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  },
+  prefersReducedMotion: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
 
   destroyed() {
     window.removeEventListener('css_clash:confetti', this.handleConfetti);

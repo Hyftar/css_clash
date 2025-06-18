@@ -34,6 +34,6 @@ defmodule CssClash.HtmlVisualiser do
     {:ok, image}
   end
 
-  defp maybe_delete_file(image_file_path, true = should_delete), do: File.rm(image_file_path)
-  defp maybe_delete_file(image_file_path, false), do: :ok
+  defp maybe_delete_file(image_file_path, true = _should_delete), do: File.rm(image_file_path)
+  defp maybe_delete_file(_image_file_path, false), do: :ok
 end
