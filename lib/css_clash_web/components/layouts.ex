@@ -23,10 +23,7 @@ defmodule CssClashWeb.Layouts do
       <div class="flex-none">
         <ul class="flex flex-column px-1 space-x-4 items-center">
           <li>
-            <a href="https://phoenixframework.org/" class="btn btn-ghost">Website</a>
-          </li>
-          <li>
-            <a href="https://github.com/phoenixframework/phoenix" class="btn btn-ghost">GitHub</a>
+            <a href="https://github.com/hyftar/css_clash" class="btn btn-ghost">GitHub</a>
           </li>
           <li>
             <.theme_toggle />
@@ -41,7 +38,7 @@ defmodule CssClashWeb.Layouts do
     </header>
 
     <main class="px-4 py-20 sm:px-6 lg:px-8">
-      <div class="mx-auto max-w-2xl space-y-4">
+      <div class="mx-auto space-y-4">
         {render_slot(@inner_block)}
       </div>
     </main>

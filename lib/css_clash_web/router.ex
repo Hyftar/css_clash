@@ -17,7 +17,7 @@ defmodule CssClashWeb.Router do
   scope "/", CssClashWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live "/", TargetLive.Show, :show
 
     get "/html_render", HtmlRenderController, :render_html
   end

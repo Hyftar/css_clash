@@ -60,7 +60,9 @@ defmodule CssClash.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:hackney, "~> 1.9"},
-      {:wallaby, "~> 0.30"}
+      {:wallaby, "~> 0.30"},
+      {:image, "~> 0.59.3"},
+      {:uuid, "~> 1.1"}
     ]
   end
 
