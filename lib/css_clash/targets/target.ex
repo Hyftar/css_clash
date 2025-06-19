@@ -12,10 +12,8 @@ defmodule CssClash.Targets.Target do
     timestamps(type: :utc_datetime)
   end
 
-  @required_fields [:name, :image_data]
-  @optional_fields [:colors]
-
-  @doc false
+  @required_fields ~w(name image_data)a
+  @optional_fields ~w(colors)a
   def changeset(target, attrs) do
     target
     |> cast(attrs, @required_fields ++ @optional_fields)

@@ -8,8 +8,10 @@ import { oneDark } from "@codemirror/theme-one-dark";
 
 export const CodeMirrorHook = {
   mounted() {
-    this.editorFor = this.el.getAttribute('data-editor-for');
-    this.language = this.el.getAttribute('data-lang');
+    this.editorFor = this.el.dataset.editorFor;
+    this.language = this.el.dataset.lang;
+
+    const initialContent = this.el.dataset.initialContent || "";
 
     const themeCompartment = new Compartment();
     const isDark = this.isDarkMode();
@@ -31,7 +33,7 @@ export const CodeMirrorHook = {
 
     const state = EditorState.create(
       {
-        doc: "\n".repeat(4),
+        doc: initialContent,
         extensions: [
           basicSetup,
           keymap.of([indentWithTab]),
@@ -89,7 +91,7 @@ export const CodeMirrorHook = {
 
   isDarkMode() {
     if (document.documentElement.getAttribute('data-theme')) {
-      return document.documentElement.getAttribute('data-theme').includes('dark')
+      return document.documentElement.getAttribute('data-theme').includes('dark');
     }
 
     return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;

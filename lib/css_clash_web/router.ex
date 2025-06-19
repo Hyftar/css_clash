@@ -31,8 +31,11 @@ defmodule CssClashWeb.Router do
   scope "/", CssClashWeb do
     pipe_through [:browser, :require_authenticated_user]
 
-    live "/", TargetLive.Index, :index
-    live "/target/:id", TargetLive.Show, :show
+    live_session :targets,
+      on_mount: [{CssClashWeb.UserAuth, :require_authenticated}] do
+      live "/", TargetLive.Index, :index
+      live "/target/:id", TargetLive.Show, :show
+    end
   end
 
   scope "/render", CssClashWeb do

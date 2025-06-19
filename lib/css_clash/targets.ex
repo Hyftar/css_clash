@@ -3,6 +3,8 @@ defmodule CssClash.Targets do
   alias CssClash.Targets.Target
   alias CssClash.Targets.Submission
 
+  import Ecto.Query
+
   @doc """
   Returns the list of targets.
 
@@ -95,6 +97,20 @@ defmodule CssClash.Targets do
   """
   def change_target(%Target{} = target, attrs \\ %{}) do
     Target.changeset(target, attrs)
+  end
+
+  def create_or_get_latest_submission(user_id, target_id) do
+    from(
+      s in Submission,
+      where: s.user_id == ^user_id and s.target_id == ^target_id,
+      order_by: [desc: s.inserted_at],
+      limit: 1
+    )
+    |> Repo.one()
+    |> then(fn
+      nil -> create_submission(%{user_id: user_id, target_id: target_id})
+      submission -> {:ok, submission}
+    end)
   end
 
   def create_submission(attrs) do

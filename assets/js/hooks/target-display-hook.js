@@ -1,10 +1,10 @@
-export const GameDisplayHook = {
+export const TargetDisplayHook = {
   mounted() {
     this.gameRenderElement = this.el.querySelector(`[data-render-for=${this.el.id}]`);
 
     this.documentState = {
-      html: '',
-      css: ''
+      html: this.el.querySelector('[data-initial-content][data-lang="html"]').dataset.initialContent || '',
+      css: this.el.querySelector('[data-initial-content][data-lang="css"]').dataset.initialContent || ''
     };
 
     this.savedDocument = { ...this.documentState };
@@ -12,7 +12,9 @@ export const GameDisplayHook = {
     window.addEventListener(`${this.el.id}:document-change`, this.onDocumentChange.bind(this));
     window.addEventListener('css_clash:submit', this.onSubmit.bind(this));
 
-    window.setInterval(this.saveProgress.bind(this), 3000);
+    window.setInterval(this.saveProgress.bind(this), 5000);
+
+    this.updateRender(this.documentState);
   },
 
   destroyed() {
@@ -37,7 +39,7 @@ export const GameDisplayHook = {
     this.pushEventTo(
       this.el,
       'submit',
-      { html: this.documentState.html, css: this.documentState.css }
+      { ...this.documentState }
     );
   },
 
@@ -63,13 +65,13 @@ export const GameDisplayHook = {
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=500, initial-scale=1.0">
-          <title>Game Display</title>
-        </head>
-        <body>
-          ${state.html}
+          <title>Target Display</title>
           <style>
             ${state.css}
           </style>
+        </head>
+        <body>
+          ${state.html}
         </body>
       </html>
     `;

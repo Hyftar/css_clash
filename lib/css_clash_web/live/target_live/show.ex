@@ -32,8 +32,9 @@ defmodule CssClashWeb.TargetLive.Show do
       </.button>
       <.live_component
         id="game-display-container"
-        module={CssClashWeb.Components.GameDisplay}
+        module={CssClashWeb.Components.TargetDisplay}
         target={@target}
+        current_user={@current_scope.user}
       />
     </Layouts.app>
     """
