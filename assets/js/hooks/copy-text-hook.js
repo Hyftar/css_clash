@@ -1,13 +1,13 @@
 export const CopyTextHook = {
   mounted() {
-    this.el.addEventListener('click', () => {
+    this.el.addEventListener("click", () => {
       if (!navigator.clipboard) {
-        return;
+        return
       }
 
-      const textToCopy = this.el.getAttribute('data-copy-text');
+      const textToCopy = this.el.getAttribute("data-copy-text")
 
-      navigator.clipboard.writeText(textToCopy);
-    });
+      navigator.clipboard.writeText(textToCopy)
+    })
   }
 }

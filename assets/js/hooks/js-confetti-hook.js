@@ -1,15 +1,15 @@
-import JSConfetti from 'js-confetti';
+import JSConfetti from "js-confetti"
 
 export const ConfettiHook = {
   mounted() {
     if (this.prefersReducedMotion() || window.confetti) {
-      return;
+      return
     }
 
-    window.confetti = new JSConfetti();
+    window.confetti = new JSConfetti()
 
-    window.addEventListener('css_clash:confetti', this.handleConfetti);
-    this.handleEvent('css_clash:confetti', this.handleConfetti)
+    window.addEventListener("css_clash:confetti", this.handleConfetti)
+    this.handleEvent("css_clash:confetti", this.handleConfetti)
   },
 
   async handleConfetti() {
@@ -17,19 +17,19 @@ export const ConfettiHook = {
       confettiRadius: 5,
       confettiNumber: 500,
       confettiColors: [
-        '#a864fd', '#29cdff', '#78ff44', '#ff718d', '#fdff6a'
+        "#a864fd", "#29cdff", "#78ff44", "#ff718d", "#fdff6a"
       ]
     }
 
     for (let i = 0; i < 3; i++) {
       window.confetti.addConfetti(confettiConfig)
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 500))
     }
   },
 
-  prefersReducedMotion: () => window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  prefersReducedMotion: () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
 
   destroyed() {
-    window.removeEventListener('css_clash:confetti', this.handleConfetti);
+    window.removeEventListener("css_clash:confetti", this.handleConfetti)
   }
 }
