@@ -67,12 +67,12 @@ export const CodeMirrorHook = {
 
   getLanguage() {
     switch (this.el.getAttribute("data-lang")) {
-    case "html":
-      return html()
-    case "css":
-      return css()
-    default:
-      throw new Error("Unsupported language")
+      case "html":
+        return html()
+      case "css":
+        return css()
+      default:
+        throw new Error("Unsupported language")
     }
   },
 

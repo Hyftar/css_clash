@@ -2,13 +2,14 @@
   pkgs,
   mixEnv,
   beamPackages,
-  elixir
+  elixir,
+  elixir_ls
 }: let
   # define packages to install
   basePackages = with pkgs; [
     git
     elixir
-    pkgs.next-ls
+    elixir_ls
     beamPackages.hex
     rebar3
     mix2nix
@@ -33,7 +34,8 @@
     mkdir -p .nix-mix .nix-hex
     export MIX_HOME=$PWD/.nix-mix
     export HEX_HOME=$PWD/.nix-mix
-    export PATH=$MIX_HOME/bin:$HEX_HOME/bin:$PATH
+    export ELS_BINARY=$(which elixir-ls)
+    export PATH=$ELS_BINARY:$MIX_HOME/bin:$HEX_HOME/bin:$PATH
 
     export LANG=en_US.UTF-8
     # keep your shell history in iex

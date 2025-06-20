@@ -47,6 +47,7 @@ export default defineConfig([
             let: 2,
             const: 3,
           },
+          SwitchCase: 1,
         },
       ],
       "key-spacing": "error",

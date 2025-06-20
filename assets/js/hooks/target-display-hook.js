@@ -24,14 +24,14 @@ export const TargetDisplayHook = {
 
   onDocumentChange(e) {
     switch (e.detail.type) {
-    case "html":
-      this.documentState.html = e.detail.value
-      break
-    case "css":
-      this.documentState.css = e.detail.value
-      break
-    default:
-      throw new Error(`Unhandled document type: ${e.detail.type}`)
+      case "html":
+        this.documentState.html = e.detail.value
+        break
+      case "css":
+        this.documentState.css = e.detail.value
+        break
+      default:
+        throw new Error(`Unhandled document type: ${e.detail.type}`)
     }
 
     this.updateRender(this.documentState)
