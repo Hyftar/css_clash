@@ -2,6 +2,7 @@ defmodule CssClashWeb.Components.TargetDisplay do
   use CssClashWeb, :live_component
 
   alias CssClash.Targets
+  alias CssClash.SubmissionEvaluator
 
   import CssClashWeb.Components.TargetRender
 
@@ -16,17 +17,22 @@ defmodule CssClashWeb.Components.TargetDisplay do
     socket =
       socket
       |> assign(diff_mode: false)
+      |> assign(current_user: assigns.current_user)
       |> assign(target: assigns.target)
-      |> assign(unique_id: UUID.uuid4())
       |> assign(user_submission: user_submission)
       |> assign(initial_html: user_submission.html)
       |> assign(initial_css: user_submission.css)
+      |> assign(score: assigns.score)
 
     {:ok, socket}
   end
 
-  def handle_event("submit", %{"html" => _html, "css" => _css}, socket) do
-    # TODO: Implement submission logic
+  def handle_event("submit", %{"html" => html, "css" => css}, socket) do
+    SubmissionEvaluator.evaluate_submission_async(
+      socket.assigns.target,
+      %{html: html, css: css}
+    )
+
     {:noreply, socket}
   end
 
@@ -60,21 +66,22 @@ defmodule CssClashWeb.Components.TargetDisplay do
   def render(assigns) do
     ~H"""
     <div
-      id={"target-display-#{@unique_id}"}
+      id={"target-display-#{@current_user.id}"}
       phx-hook="TargetDisplayHook"
       class="grid grid-cols-[1fr_minmax(500px,_1fr)] gap-x-8 justify-start overflow-y-auto"
     >
       <section class="flex flex-col gap-y-8 justify-start">
+        <div>{@score || "not yet submitted"}</div>
         <div class="overflow-y-auto max-h-96">
           <header class="sticky top-0 z-10 bg-base-100 text-base-800 pb-4 text-lg">
             {dgettext("game_display", "html_editor")}
           </header>
           <div
-            id={"html-editor-#{@unique_id}"}
+            id={"html-editor-#{@current_user.id}"}
             phx-hook="CodeMirrorHook"
             phx-update="ignore"
             data-lang="html"
-            data-editor-for={"target-display-#{@unique_id}"}
+            data-editor-for={"target-display-#{@current_user.id}"}
             data-initial-content={@initial_html}
             class="min-h-32 grow-0 overflow-y-auto"
           >
@@ -85,11 +92,11 @@ defmodule CssClashWeb.Components.TargetDisplay do
             {dgettext("game_display", "css_editor")}
           </header>
           <div
-            id={"css-editor-#{@unique_id}"}
+            id={"css-editor-#{@current_user.id}"}
             phx-hook="CodeMirrorHook"
             phx-update="ignore"
             data-lang="css"
-            data-editor-for={"target-display-#{@unique_id}"}
+            data-editor-for={"target-display-#{@current_user.id}"}
             data-initial-content={@initial_css}
             class="min-h-32 grow-0 overflow-y-auto"
           >
@@ -98,7 +105,7 @@ defmodule CssClashWeb.Components.TargetDisplay do
       </section>
       <section class="flex flex-col items-center grow-1 gap-4">
         <.target_render
-          unique_id={@unique_id}
+          unique_id={@current_user.id}
           target={@target}
           diff_mode={@diff_mode}
           myself={@myself}

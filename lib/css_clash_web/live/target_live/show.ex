@@ -7,6 +7,7 @@ defmodule CssClashWeb.TargetLive.Show do
     socket =
       socket
       |> assign(target: Targets.get_target!(id))
+      |> assign(score: nil)
 
     {:ok, socket}
   end
@@ -18,6 +19,16 @@ defmodule CssClashWeb.TargetLive.Show do
 
     {:noreply, socket}
   end
+
+  def handle_info({_ref, {:ok, score}}, socket) do
+    socket =
+      socket
+      |> assign(score: score)
+
+    {:noreply, socket}
+  end
+
+  def handle_info(_message, socket), do: {:noreply, socket}
 
   def render(assigns) do
     ~H"""
@@ -35,6 +46,7 @@ defmodule CssClashWeb.TargetLive.Show do
         module={CssClashWeb.Components.TargetDisplay}
         target={@target}
         current_user={@current_scope.user}
+        score={@score}
       />
     </Layouts.app>
     """

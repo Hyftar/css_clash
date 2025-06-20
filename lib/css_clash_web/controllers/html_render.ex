@@ -1,10 +1,10 @@
 defmodule CssClashWeb.HtmlRenderController do
-  use Phoenix.Controller, formats: [html: "html_render_html"]
+  use CssClashWeb, :controller
 
   def render_html(conn, %{"html" => html, "css" => css}) do
     conn
     |> assign(:html, html)
     |> assign(:css, css)
-    |> render(:render_html)
+    |> render(:render_html, layout: false)
   end
 end

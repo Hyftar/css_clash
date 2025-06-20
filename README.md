@@ -43,12 +43,12 @@ A game where you clash with style!
 
 ### Gameplay loop
 - [X] HTML / CSS Live Editor (with document rendering)
-- [ ] Show current document diff with target (client-side)
-- [ ] Diff document and computer score (server-side)
+- [X] Show current document diff with target (client-side)
+- [X] Diff document and computer score (server-side)
 
 ### Core features
-- [ ] Accounts (with score tracking)
-- [ ] Select between different targets
+- [X] Accounts (with score tracking)
+- [X] Select between different targets
 - [ ] Per target first completion leaderboards
 
 ### Extra Gameplay modes

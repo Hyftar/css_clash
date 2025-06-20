@@ -1,6 +1,6 @@
 export const TargetDisplayHook = {
   mounted() {
-    this.gameRenderElement = this.el.querySelector(`[data-render-for=${this.el.id}]`)
+    this.gameRenderElement = this.el.querySelector('[data-component-name="document-render"]')
 
     this.documentState = {
       html: this.el.querySelector('[data-initial-content][data-lang="html"]').dataset.initialContent || "",

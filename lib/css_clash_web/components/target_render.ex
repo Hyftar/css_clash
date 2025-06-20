@@ -27,8 +27,8 @@ defmodule CssClashWeb.Components.TargetRender do
         height="500px"
       />
       <iframe
-        id="game-render"
-        data-render-for={"game-display-#{@unique_id}"}
+        id={"document-render-#{@target.id}"}
+        data-component-name="document-render"
         sandbox=""
         class="min-w-[500px] min-h-[500px]"
         width="500px"
@@ -62,7 +62,7 @@ defmodule CssClashWeb.Components.TargetRender do
       <div class="flex justify-center">
         <.button
           variant="primary"
-          phx-click={JS.dispatch("css_clash:submit", to: "#game-display-#{@unique_id}")}
+          phx-click={JS.dispatch("css_clash:submit", to: "#target-display-#{@unique_id}")}
         >
           <span class="me-2">{dgettext("game_display", "submit")}</span>
           <.icon name="hero-paper-airplane-solid" class="-rotate-45 -translate-y-0.5" />
