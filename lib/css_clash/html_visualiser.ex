@@ -1,7 +1,7 @@
 defmodule CssClash.HtmlVisualiser do
   import Wallaby.Browser
 
-  def convert_html_to_image(html, css, opts \\ []) do
+  def convert_html_to_image(html, css) do
     {:ok, _} = Application.ensure_all_started(:wallaby)
 
     query =

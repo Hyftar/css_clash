@@ -1,4 +1,6 @@
 defmodule CssClashWeb.CoreComponents do
+  import Tails, only: [classes: 1]
+
   @moduledoc """
   Provides core UI components.
 
@@ -42,7 +44,17 @@ defmodule CssClashWeb.CoreComponents do
   attr :id, :string, doc: "the optional id of flash container"
   attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
   attr :title, :string, default: nil
-  attr :kind, :atom, values: [:info, :error], doc: "used for styling and flash lookup"
+  attr :kind, :atom, values: [:success, :info, :error], doc: "used for styling and flash lookup"
+
+  attr :auto_dismiss, :boolean,
+    default: true,
+    doc: "whether the flash should auto-dismiss after a delay"
+
+  attr :auto_dismiss_delay,
+       :integer,
+       default: 5000,
+       doc: "the delay in milliseconds before the flash auto-dismisses"
+
   attr :rest, :global, doc: "the arbitrary HTML attributes to add to the flash container"
 
   slot :inner_block, doc: "the optional inner block that renders the flash message"
@@ -57,23 +69,55 @@ defmodule CssClashWeb.CoreComponents do
       phx-click={JS.push("lv:clear-flash", value: %{key: @kind}) |> hide("##{@id}")}
       role="alert"
       class="toast toast-top toast-end z-50"
+      phx-hook={@auto_dismiss && "FlashAutoDismiss"}
+      data-auto-dismiss-delay={@auto_dismiss_delay}
+      data-flash-kind={@kind}
       {@rest}
     >
       <div class={[
-        "alert w-80 sm:w-96 max-w-80 sm:max-w-96 text-wrap",
-        @kind == :info && "alert-info",
-        @kind == :error && "alert-error"
+        "motion-safe:animate-wiggle pointer-events-auto w-80 sm:w-96 sm:max-w-96 text-wrap overflow-hidden rounded-lg bg-white shadow-lg ring-1 relative",
+        @kind == :error && "ring-red-500/20",
+        @kind in [:info, :success] && "ring-black/20"
       ]}>
-        <.icon :if={@kind == :info} name="hero-information-circle-mini" class="size-5 shrink-0" />
-        <.icon :if={@kind == :error} name="hero-exclamation-circle-mini" class="size-5 shrink-0" />
-        <div>
-          <p :if={@title} class="font-semibold">{@title}</p>
-          <p>{msg}</p>
+        <div class={[
+          "absolute bottom-0 left-0 h-1 transition-grow-right w-full duration-5000! motion-reduce:hidden",
+          @kind == :error && "bg-red-500/30",
+          @kind == :info && "bg-sky-500/30",
+          @kind == :success && "bg-green-500/30"
+        ]} />
+
+        <div class="p-4">
+          <div class="flex items-start">
+            <.icon
+              :if={@kind == :info}
+              name="hero-information-circle"
+              class="size-6 shrink-0 self-center text-sky-600"
+            />
+            <.icon
+              :if={@kind == :error}
+              name="hero-exclamation-circle"
+              class="size-6 shrink-0 self-center text-red-600"
+            />
+            <.icon
+              :if={@kind == :success}
+              name="hero-check-circle"
+              class="size-6 shrink-0 self-center text-green-600"
+            />
+            <div class="ml-3 w-0 flex-1 pt-0.5">
+              <p :if={@title} class="text-sm font-medium text-gray-900 mb-1">{@title}</p>
+              <p class="text-sm text-gray-500">{msg}</p>
+            </div>
+            <div class="ml-4 flex shrink-0">
+              <button
+                type="button"
+                class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
+              >
+                <span class="sr-only">{gettext("close")}</span>
+                <.icon name="hero-x-mark-mini" class="size-5" />
+              </button>
+            </div>
+          </div>
         </div>
-        <div class="flex-1" />
-        <button type="button" class="group self-start cursor-pointer" aria-label={gettext("close")}>
-          <.icon name="hero-x-mark-solid" class="size-5 opacity-40 group-hover:opacity-70" />
-        </button>
       </div>
     </div>
     """
@@ -89,11 +133,25 @@ defmodule CssClashWeb.CoreComponents do
       <.button navigate={~p"/"}>Home</.button>
   """
   attr :rest, :global, include: ~w(href navigate patch)
-  attr :variant, :string, values: ~w(primary)
+  attr :variant, :string, values: ~w(primary secondary disabled)
+  attr :disabled, :boolean, default: false
   slot :inner_block, required: true
 
-  def button(%{rest: rest} = assigns) do
-    variants = %{"primary" => "btn-primary", nil => "btn-primary btn-soft"}
+  def button(%{rest: rest, disabled: disabled} = assigns) do
+    variants = %{
+      "primary" => "btn-primary",
+      "secondary" => "btn-secondary",
+      "disabled" => "btn-disabled cursor-not-allowed",
+      nil => "btn-primary btn-soft"
+    }
+
+    assigns =
+      if disabled do
+        assign(assigns, :variant, "disabled")
+      else
+        assigns
+      end
+
     assigns = assign(assigns, :class, Map.fetch!(variants, assigns[:variant]))
 
     if rest[:href] || rest[:navigate] || rest[:patch] do
@@ -104,7 +162,7 @@ defmodule CssClashWeb.CoreComponents do
       """
     else
       ~H"""
-      <button class={["btn", @class]} {@rest}>
+      <button class={["btn", @class]} disabled={@disabled} {@rest}>
         {render_slot(@inner_block)}
       </button>
       """
@@ -405,6 +463,22 @@ defmodule CssClashWeb.CoreComponents do
   def icon(%{name: "hero-" <> _} = assigns) do
     ~H"""
     <span class={[@name, @class]} />
+    """
+  end
+
+  attr :type, :atom, values: [:outline], default: :outline
+  attr :class, :string, default: ""
+
+  def spinner(assigns) do
+    ~H"""
+    <div class={
+      classes([
+        "animate-spin size-6 border-4 border-white/20 border-t-white/50 rounded-full",
+        "motion-reduce:hidden",
+        @class
+      ])
+    }>
+    </div>
     """
   end
 

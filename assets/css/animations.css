@@ -1,0 +1,21 @@
+.transition-grow-right {
+  @apply transition-[width] duration-3000 ease-linear;
+
+  @starting-style {
+    @apply w-0;
+  }
+}
+
+@theme {
+  --animate-wiggle: wiggle 0.15s ease-in-out 2;
+
+  @keyframes wiggle {
+    0%,
+    100% {
+      transform: rotate(-0.45deg);
+    }
+    50% {
+      transform: rotate(0.45deg);
+    }
+  }
+}

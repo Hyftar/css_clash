@@ -1,12 +1,13 @@
-defmodule CssClashWeb.Components.TargetRender do
+defmodule CssClashWeb.Components.Target.DocumentRender do
   use CssClashWeb, :html
 
   attr :unique_id, :string, required: true
   attr :diff_mode, :boolean, required: true
   attr :myself, :string, required: true
   attr :target, :map, required: true
+  attr :score, :map, required: true
 
-  def target_render(assigns) do
+  def document_render(assigns) do
     ~H"""
     <div>
       <input
@@ -59,13 +60,28 @@ defmodule CssClashWeb.Components.TargetRender do
           <.icon name="hero-clipboard-document-list-solid" />
         </div>
       </div>
-      <div class="flex justify-center">
+      <div class="flex gap-2 justify-center">
         <.button
           variant="primary"
+          disabled={@score != nil && (@score.loading || @score.result == 1.0)}
           phx-click={JS.dispatch("css_clash:submit", to: "#target-display-#{@unique_id}")}
         >
-          <span class="me-2">{dgettext("game_display", "submit")}</span>
-          <.icon name="hero-paper-airplane-solid" class="-rotate-45 -translate-y-0.5" />
+          <%= if @score && @score.loading do %>
+            <span class="me-2">{dgettext("game_display", "working")}</span>
+            <.spinner />
+          <% else %>
+            <span class="me-2">{dgettext("game_display", "submit")}</span>
+            <.icon name="hero-paper-airplane-solid" class="-rotate-45 -translate-y-0.5" />
+          <% end %>
+        </.button>
+        <.button
+          disabled={!@score || @score.result != 1.0}
+          variant="secondary"
+          phx-click="reset"
+          phx-target={@myself}
+        >
+          {dgettext("game_display", "reset")}
+          <.icon name="hero-sparkles" class="size-6" />
         </.button>
       </div>
     </div>

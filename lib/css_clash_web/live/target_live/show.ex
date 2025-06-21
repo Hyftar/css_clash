@@ -7,7 +7,6 @@ defmodule CssClashWeb.TargetLive.Show do
     socket =
       socket
       |> assign(target: Targets.get_target!(id))
-      |> assign(score: nil)
 
     {:ok, socket}
   end
@@ -15,38 +14,25 @@ defmodule CssClashWeb.TargetLive.Show do
   def handle_event("copied", %{"color" => color}, socket) do
     socket =
       socket
-      |> put_flash(:info, dgettext("game_display", "color_copied_to_clipboard", color: color))
+      |> put_flash(
+        :info,
+        dgettext("game_display", "color_copied_to_clipboard", color: color)
+        # auto_dismiss: true,
+        # auto_dismiss_delay: 3000
+      )
 
     {:noreply, socket}
   end
-
-  def handle_info({_ref, {:ok, score}}, socket) do
-    socket =
-      socket
-      |> assign(score: score)
-
-    {:noreply, socket}
-  end
-
-  def handle_info(_message, socket), do: {:noreply, socket}
 
   def render(assigns) do
     ~H"""
     <Layouts.app flash={@flash}>
-      <.button
-        id="confetti-button"
-        variant="primary"
-        phx-click={JS.dispatch("css_clash:confetti")}
-        phx-hook="ConfettiHook"
-      >
-        Confettis! 🎉
-      </.button>
+      <div id="confetti-container" class="hidden" phx-hook="ConfettiHook"></div>
       <.live_component
-        id="game-display-container"
-        module={CssClashWeb.Components.TargetDisplay}
+        id={"target-display-container-#{@target.id}"}
+        module={CssClashWeb.Components.Target.Display}
         target={@target}
         current_user={@current_scope.user}
-        score={@score}
       />
     </Layouts.app>
     """

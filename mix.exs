@@ -63,7 +63,8 @@ defmodule CssClash.MixProject do
       {:hackney, "~> 1.9"},
       {:wallaby, "~> 0.30"},
       {:image, "~> 0.59.3"},
-      {:uuid, "~> 1.1"}
+      {:uuid, "~> 1.1"},
+      {:tails, github: "rum-and-code/tails", branch: "main"}
     ]
   end
 

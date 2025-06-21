@@ -1,0 +1,47 @@
+## "msgid"s in this file come from POT (.pot) files.
+###
+### Do not add, change, or remove "msgid"s manually here as
+### they're tied to the ones in the corresponding POT file
+### (with the same domain).
+###
+### Use "mix gettext.extract --merge" or "mix gettext.merge"
+### to merge POT files into PO files.
+msgid ""
+msgstr ""
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n>1);\n"
+
+#: lib/css_clash_web/live/target_live/show.ex:19
+#, elixir-autogen, elixir-format
+msgid "color_copied_to_clipboard"
+msgstr ""
+
+#: lib/css_clash_web/components/target/display.ex:191
+#, elixir-autogen, elixir-format
+msgid "css_editor"
+msgstr "Éditeur CSS"
+
+#: lib/css_clash_web/components/target/display.ex:175
+#, elixir-autogen, elixir-format
+msgid "html_editor"
+msgstr "Éditeur HTML"
+
+#: lib/css_clash_web/components/target/display.ex:171
+#, elixir-autogen, elixir-format
+msgid "score"
+msgstr "Vous avez obtenu un score de %{score}%"
+
+#: lib/css_clash_web/components/target/document_render.ex:73
+#, elixir-autogen, elixir-format
+msgid "submit"
+msgstr "Envoyer"
+
+#: lib/css_clash_web/components/target/document_render.ex:70
+#, elixir-autogen, elixir-format
+msgid "working"
+msgstr "Travail en cours ..."
+
+#: lib/css_clash_web/components/target/document_render.ex:83
+#, elixir-autogen, elixir-format
+msgid "reset"
+msgstr "Remettre à zéro"

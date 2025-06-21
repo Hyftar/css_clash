@@ -124,4 +124,10 @@ defmodule CssClash.Targets do
     |> Submission.changeset(attrs)
     |> Repo.update()
   end
+
+  def submit_submission(%Submission{} = submission, attrs) do
+    submission
+    |> Submission.submit_changeset(attrs)
+    |> Repo.update()
+  end
 end

@@ -1,13 +1,13 @@
 .cm-content,
 .cm-gutter {
-  @apply "min-h-[150px]!";
+  @apply min-h-[150px]!;
 }
 .cm-gutters {
-  @apply "m-[1px]!";
+  @apply m-[1px]!;
 }
 .cm-scroller {
-  @apply "overflow-auto!";
+  @apply overflow-auto!;
 }
 .cm-wrap {
-  @apply "border-solid! border-1! border-base-100!";
+  @apply border-solid! border-1! border-base-100!;
 }

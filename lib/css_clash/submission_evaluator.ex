@@ -1,22 +1,23 @@
 defmodule CssClash.SubmissionEvaluator do
   alias CssClash.HtmlVisualiser
+  alias CssClash.Targets
 
-  def evaluate_submission_async(
+  def evaluate_submission(
         %{image_data: target_image} = _target,
-        %{html: html, css: css} = _submission
+        %{html: html, css: css} = submission
       ) do
-    Task.async(fn ->
-      {:ok, rendered_image, image_file_path} =
-        HtmlVisualiser.convert_html_to_image(html, css, cleanup_file: false)
+    {:ok, rendered_image, image_file_path} =
+      HtmlVisualiser.convert_html_to_image(html, css)
 
-      target_image = Image.open!(target_image)
+    target_image = Image.open!(target_image)
 
-      score = evaluate_submission_score(target_image, rendered_image)
+    score = evaluate_submission_score(target_image, rendered_image)
 
-      File.rm!(image_file_path)
+    {:ok, submission} = Targets.update_submission(submission, %{score: score})
 
-      {:ok, score}
-    end)
+    File.rm!(image_file_path)
+
+    submission
   end
 
   @error_tolerance 0.002
