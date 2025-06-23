@@ -22,7 +22,19 @@ defmodule CssClash.HtmlVisualiser do
       headless: true
     )
     |> then(fn {:ok, session} -> session end)
-    |> visit("/render/html_render?#{query}")
+    |> visit("/render/html_render")
+    |> execute_script(
+      """
+      const frameDoc = document.querySelector('iframe').contentDocument;
+
+      const styleElem = frameDoc.createElement('style');
+      styleElem.innerHTML = arguments[1];
+      frameDoc.head.appendChild(styleElem);
+
+      frameDoc.body.innerHTML = arguments[0];
+      """,
+      [html, css]
+    )
     |> take_screenshot(name: image_file_name)
     |> Wallaby.end_session()
 

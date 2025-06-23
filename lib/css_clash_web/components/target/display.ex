@@ -166,7 +166,7 @@ defmodule CssClashWeb.Components.Target.Display do
       phx-hook="TargetDisplayHook"
       class="grid grid-cols-[1fr_minmax(500px,_1fr)] gap-x-8 justify-start overflow-y-auto"
     >
-      <section class="flex flex-col gap-y-8 justify-start">
+      <section class="flex flex-col gap-y-8 justify-start overflow-auto">
         <div :if={@score && @score.ok?}>
           {dgettext("game_display", "score", score: Submission.score_to_human(@score))}
         </div>

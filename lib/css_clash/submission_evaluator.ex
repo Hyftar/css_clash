@@ -20,10 +20,10 @@ defmodule CssClash.SubmissionEvaluator do
     submission
   end
 
-  @error_tolerance 0.002
+  @error_tolerance 0.012
 
   def evaluate_submission_score(target_image, submission_image) do
-    Image.compare(target_image, submission_image)
+    Image.compare(target_image, submission_image, metric: :rmse)
     |> then(fn {:ok, comparison_metric, _} ->
       if(
         comparison_metric <= @error_tolerance,

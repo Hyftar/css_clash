@@ -10,10 +10,10 @@ defmodule CssClashWeb.HtmlRenderHTML do
       }
     </style>
     <iframe
-      srcdoc={"<html><head><style>#{@css}</style></head><body>#{@html}</body></html>"}
+      srcdoc="<html><head></head><body style='overflow: hidden;'></body></html>"
       width="500"
       height="500"
-      sandbox=""
+      sandbox="allow-same-origin"
     >
     </iframe>
     """
