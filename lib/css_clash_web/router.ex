@@ -49,6 +49,14 @@ defmodule CssClashWeb.Router do
     end
   end
 
+  # Serve target images without authentication requirement
+  scope "/target-images", CssClashWeb do
+    pipe_through [:browser]
+
+    # Route for serving images directly from the Targets table
+    get "/:id", TargetImageController, :show
+  end
+
   scope "/render", CssClashWeb do
     pipe_through [:renderer]
 

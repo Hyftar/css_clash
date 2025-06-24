@@ -35,6 +35,22 @@ defmodule CssClash.Targets do
   def get_target!(id), do: Repo.get!(Target, id)
 
   @doc """
+  Gets a single target by slug.
+
+  Raises `Ecto.NoResultsError` if the Target does not exist.
+
+  ## Examples
+
+      iex> get_target_by_slug!("some-uuid-slug")
+      %Target{}
+
+      iex> get_target_by_slug!("nonexistent-slug")
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_target_by_slug!(slug), do: Repo.get_by!(Target, slug: slug)
+
+  @doc """
   Creates a target.
 
   ## Examples

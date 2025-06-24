@@ -9,7 +9,7 @@ defmodule CssClashWeb.UserAuthTest do
   import CssClash.AccountsFixtures
 
   @remember_me_cookie "_css_clash_web_user_remember_me"
-  @remember_me_cookie_max_age 60 * 60 * 24 * 14
+  @remember_me_cookie_max_age 60 * 60 * 24 * 30
 
   setup %{conn: conn} do
     conn =

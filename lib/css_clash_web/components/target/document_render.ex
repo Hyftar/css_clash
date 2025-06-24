@@ -1,6 +1,8 @@
 defmodule CssClashWeb.Components.Target.DocumentRender do
   use CssClashWeb, :html
 
+  import CssClashWeb.Components.Target.TargetImage
+
   attr :unique_id, :string, required: true
   attr :diff_mode, :boolean, required: true
   attr :hover_mode, :boolean, required: true
@@ -40,12 +42,11 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
           </div>
         </div>
         <div class="relative">
-          <img
+          <.target_image
             :if={@diff_mode}
+            target={@target}
             class="min-w-[500px] min-h-[500px] absolute top-0 left-0 mix-blend-difference"
-            src={"data:image/jpeg;base64,#{Base.encode64(@target.image_data)}"}
-            width="500px"
-            height="500px"
+            alt="target image for difference mode"
           />
           <iframe
             id={"document-render-#{@target.id}"}
@@ -60,11 +61,10 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
         </div>
       </div>
       <div>
-        <img
+        <.target_image
+          target={@target}
           class="min-w-[500px] min-h-[500px]"
-          src={"data:image/jpeg;base64,#{Base.encode64(@target.image_data)}"}
-          width="500px"
-          height="500px"
+          alt="target image reference"
         />
       </div>
     </div>

@@ -86,6 +86,8 @@ defmodule CssClashWeb do
       import Phoenix.HTML
       # Core UI components
       import CssClashWeb.CoreComponents
+      # Target image helpers
+      import CssClashWeb.Helpers.TargetImage
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS
