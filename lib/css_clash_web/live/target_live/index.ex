@@ -34,15 +34,15 @@ defmodule CssClashWeb.TargetLive.Index do
       <.table
         id="targets"
         rows={@streams.targets}
-        row_click={fn {_id, target} -> JS.navigate(~p"/target/#{target}") end}
+        row_click={fn {_id, target} -> JS.navigate(~p"/targets/#{target}") end}
       >
         <:col :let={{_id, target}} label="Name">{target.name}</:col>
         <:col :let={{_id, target}} label="Colors">{target.colors}</:col>
         <:action :let={{_id, target}}>
           <div class="sr-only">
-            <.link navigate={~p"/target/#{target}"}>Show</.link>
+            <.link navigate={~p"/targets/#{target}"}>Show</.link>
           </div>
-          <.link navigate={~p"/target/#{target}/edit"}>Edit</.link>
+          <.link navigate={~p"/targets/#{target}/edit"}>Edit</.link>
         </:action>
         <:action :let={{id, target}}>
           <.link

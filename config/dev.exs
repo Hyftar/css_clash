@@ -26,7 +26,8 @@ config :css_clash, CssClashWeb.Endpoint,
   secret_key_base: "L1phlax45AiAqg75uzqWE2Yo7tNg2Ph7WZv6v1GUFWrc1SfSOWBzn7OZbHuU7DcT",
   watchers: [
     esbuild: {Esbuild, :install_and_run, [:css_clash, ~w(--sourcemap=inline --watch)]},
-    tailwind: {Tailwind, :install_and_run, [:css_clash, ~w(--watch)]}
+    tailwind: {Tailwind, :install_and_run, [:css_clash, ~w(--watch)]},
+    npm: {System, :cmd, ["npm", ["run", "watch-statics", "--prefix", "./assets"], []]}
   ]
 
 # ## SSL Support

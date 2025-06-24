@@ -81,10 +81,15 @@ defmodule CssClash.MixProject do
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["tailwind.install --if-missing", "esbuild.install --if-missing"],
-      "assets.build": ["tailwind css_clash", "esbuild css_clash"],
+      "assets.build": [
+        "tailwind css_clash",
+        "esbuild css_clash",
+        "cmd npm run build --prefix ./assets"
+      ],
       "assets.deploy": [
         "tailwind css_clash --minify",
         "esbuild css_clash --minify",
+        "cmd npm run build --prefix ./assets",
         "phx.digest"
       ]
     ]

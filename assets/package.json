@@ -5,6 +5,11 @@
   "author": "hyftar",
   "license": "",
   "description": "",
+  "scripts": {
+    "copy-statics": "node js/copy_static_files.js",
+    "build": "npm run copy-statics",
+    "watch-statics": "node js/copy_static_files.js && chokidar \"images/**/*\" \"misc/**/*\" -c \"node js/copy_static_files.js || true\""
+  },
   "dependencies": {
     "@codemirror/commands": "^6.8.1",
     "@codemirror/lang-css": "^6.3.1",
@@ -12,10 +17,12 @@
     "@codemirror/state": "^6.5.2",
     "@codemirror/theme-one-dark": "^6.1.2",
     "codemirror": "^6.0.1",
+    "fs-extra": "^11.3.0",
     "js-confetti": "^0.12.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
+    "chokidar-cli": "^3.0.0",
     "eslint": "^9.29.0",
     "globals": "^16.2.0"
   }

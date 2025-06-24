@@ -34,12 +34,18 @@ defmodule CssClashWeb.Router do
   end
 
   scope "/", CssClashWeb do
+    pipe_through :browser
+
+    get "/", PageController, :home
+  end
+
+  scope "/targets", CssClashWeb do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :targets,
       on_mount: [{CssClashWeb.UserAuth, :require_authenticated}] do
       live "/", TargetLive.Index, :index
-      live "/target/:id", TargetLive.Show, :show
+      live "/:id", TargetLive.Show, :show
     end
   end
 
@@ -48,11 +54,6 @@ defmodule CssClashWeb.Router do
 
     get "/html_render", HtmlRenderController, :render_html
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", CssClashWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:css_clash, :dev_routes) do
