@@ -3,42 +3,72 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
 
   attr :unique_id, :string, required: true
   attr :diff_mode, :boolean, required: true
+  attr :hover_mode, :boolean, required: true
   attr :myself, :string, required: true
   attr :target, :map, required: true
   attr :score, :map, required: true
 
   def document_render(assigns) do
     ~H"""
-    <div>
-      <input
-        id="diff-mode"
-        type="checkbox"
-        checked={@diff_mode}
-        phx-click="toggle_diff_mode"
-        phx-target={@myself}
-      />
-      <label for="diff-mode">Diff Mode</label>
+    <div class="flex justify-between items-end gap-4">
+      <div>
+        <div class="flex justify-between">
+          <div>
+            <input
+              id={"diff-mode-#{@unique_id}"}
+              class="toggle toggle-primary"
+              type="checkbox"
+              checked={@diff_mode}
+              phx-click="toggle_diff_mode"
+              phx-target={@myself}
+              phx-value-checked={if(@diff_mode, do: "true", else: "false")}
+            />
+            <label for={"diff-mode-#{@unique_id}"}>{dgettext("game_display", "diff_mode")}</label>
+          </div>
+
+          <div>
+            <input
+              id={"hover-mode-#{@unique_id}"}
+              type="checkbox"
+              class="toggle toggle-primary"
+              checked={@hover_mode}
+              phx-click="toggle_hover_mode"
+              phx-target={@myself}
+              phx-value-checked={if(@hover_mode, do: "true", else: "false")}
+            />
+            <label for={"hover-mode-#{@unique_id}"}>{dgettext("game_display", "hover_mode")}</label>
+          </div>
+        </div>
+        <div class="relative">
+          <img
+            :if={@diff_mode}
+            class="min-w-[500px] min-h-[500px] absolute top-0 left-0 mix-blend-difference"
+            src={"data:image/jpeg;base64,#{Base.encode64(@target.image_data)}"}
+            width="500px"
+            height="500px"
+          />
+          <iframe
+            id={"document-render-#{@target.id}"}
+            data-component-name="document-render"
+            sandbox=""
+            class="min-w-[500px] min-h-[500px]"
+            width="500px"
+            height="500px"
+            phx-update="ignore"
+          >
+          </iframe>
+        </div>
+      </div>
+      <div>
+        <img
+          class="min-w-[500px] min-h-[500px]"
+          src={"data:image/jpeg;base64,#{Base.encode64(@target.image_data)}"}
+          width="500px"
+          height="500px"
+        />
+      </div>
     </div>
-    <div id="render-preview" class="relative">
-      <img
-        :if={@diff_mode}
-        class="min-w-[500px] min-h-[500px] absolute top-0 left-0 mix-blend-difference"
-        src={"data:image/jpeg;base64,#{Base.encode64(@target.image_data)}"}
-        width="500px"
-        height="500px"
-      />
-      <iframe
-        id={"document-render-#{@target.id}"}
-        data-component-name="document-render"
-        sandbox=""
-        class="min-w-[500px] min-h-[500px]"
-        width="500px"
-        height="500px"
-        phx-update="ignore"
-      >
-      </iframe>
-    </div>
-    <div class="flex flex-col gap-4 grow-1 w-full">
+    <div class="flex flex-col gap-4 grow-1 w-full mt-4">
       <div class="flex justify-center flex-wrap gap-2">
         <div
           :for={{color, index} <- @target.colors |> Stream.with_index()}

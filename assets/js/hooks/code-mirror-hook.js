@@ -1,5 +1,5 @@
 import { Compartment, EditorState } from "@codemirror/state"
-import { EditorView, keymap } from "@codemirror/view"
+import { EditorView, keymap, scrollPastEnd } from "@codemirror/view"
 import { basicSetup } from "codemirror"
 import { css } from "@codemirror/lang-css"
 import { html } from "@codemirror/lang-html"
@@ -37,6 +37,7 @@ export const CodeMirrorHook = {
 
     const extensions = [
       basicSetup,
+      scrollPastEnd(),
       keymap.of([indentWithTab]),
       this.getLanguage(),
       onUpdate,

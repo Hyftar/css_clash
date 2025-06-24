@@ -20,6 +20,7 @@ defmodule CssClashWeb.Components.Target.Display do
     socket =
       socket
       |> assign(diff_mode: false)
+      |> assign(hover_mode: true)
       |> assign(show_success_message: false)
       |> assign(
         score: if(user_submission.score, do: AsyncResult.ok(user_submission.score), else: nil)
@@ -79,18 +80,18 @@ defmodule CssClashWeb.Components.Target.Display do
     {:noreply, socket}
   end
 
-  def handle_event("toggle_diff_mode", %{"value" => "on"}, socket) do
+  def handle_event("toggle_diff_mode", %{"checked" => value}, socket) do
     socket =
       socket
-      |> assign(diff_mode: true)
+      |> assign(diff_mode: not String.to_existing_atom(value))
 
     {:noreply, socket}
   end
 
-  def handle_event("toggle_diff_mode", _params, socket) do
+  def handle_event("toggle_hover_mode", %{"checked" => value}, socket) do
     socket =
       socket
-      |> assign(diff_mode: false)
+      |> assign(hover_mode: not String.to_existing_atom(value))
 
     {:noreply, socket}
   end
@@ -163,55 +164,64 @@ defmodule CssClashWeb.Components.Target.Display do
     ~H"""
     <div
       id={"target-display-#{@current_user.id}"}
+      class="flex justify-between gap-4"
       phx-hook="TargetDisplayHook"
-      class="grid grid-cols-[1fr_minmax(500px,_1fr)] gap-x-8 justify-start overflow-y-auto"
     >
-      <section class="flex flex-col gap-y-8 justify-start overflow-auto">
-        <div :if={@score && @score.ok?}>
-          {dgettext("game_display", "score", score: Submission.score_to_human(@score))}
-        </div>
-        <div class="overflow-y-auto max-h-96">
-          <header class="sticky top-0 z-10 bg-base-100 text-base-800 pb-4 text-lg">
-            {dgettext("game_display", "html_editor")}
-          </header>
-          <div
-            id={"html-editor-#{@current_user.id}"}
-            phx-hook="CodeMirrorHook"
-            phx-update="ignore"
-            data-lang="html"
-            data-editor-for={"target-display-#{@current_user.id}"}
-            data-initial-content={@initial_html}
-            data-readonly={@readonly && "true"}
-            class="min-h-32 grow-0 overflow-y-auto"
-          >
-          </div>
-        </div>
-        <div class="overflow-y-auto max-h-96">
-          <header class="sticky top-0 z-10 bg-base-100 text-base-800 pb-4 text-lg">
-            {dgettext("game_display", "css_editor")}
-          </header>
-          <div
-            id={"css-editor-#{@current_user.id}"}
-            phx-hook="CodeMirrorHook"
-            phx-update="ignore"
-            data-lang="css"
-            data-editor-for={"target-display-#{@current_user.id}"}
-            data-initial-content={@initial_css}
-            data-readonly={@readonly && "true"}
-            class="min-h-32 grow-0 overflow-y-auto"
-          >
-          </div>
-        </div>
-      </section>
-      <section class="flex flex-col items-center grow-1 gap-4">
+      <div class="grow flex flex-col h-[80vh] overflow-hidden min-w-[250px] max-w-[750px]">
+        <.editor
+          title={dgettext("game_display", "html_editor")}
+          type="html"
+          initial_content={@initial_html}
+          user_id={@current_user.id}
+          readonly={@readonly}
+        />
+        <.editor
+          title={dgettext("game_display", "css_editor")}
+          type="css"
+          initial_content={@initial_css}
+          user_id={@current_user.id}
+          readonly={@readonly}
+        />
+      </div>
+      <div>
         <.document_render
           unique_id={@current_user.id}
           target={@target}
           diff_mode={@diff_mode}
+          hover_mode={@hover_mode}
           score={@score}
           myself={@myself}
         />
-      </section>
+      </div>
+    </div>
+    """
+  end
+
+  attr :title, :string, required: true
+  attr :type, :string, required: true
+  attr :initial_content, :string, required: true
+  attr :user_id, :integer, required: true
+  attr :readonly, :boolean, required: true
+  attr :class, :string, required: false, default: ""
+
+  defp editor(assigns) do
+    ~H"""
+    <div class={["flex flex-col flex-1 min-h-0", @class]}>
+      <header class="sticky top-0 z-10 bg-base-100 text-base-800 pb-4 text-lg">
+        <%!-- {dgettext("game_display", "css_editor")} --%>
+        {@title}
+      </header>
+      <div
+        id={"#{@type}-editor-#{@user_id}"}
+        phx-hook="CodeMirrorHook"
+        phx-update="ignore"
+        data-lang={@type}
+        data-editor-for={"target-display-#{@user_id}"}
+        data-initial-content={@initial_content}
+        data-readonly={@readonly && "true"}
+        class="flex-1 overflow-auto min-h-0 max-h-[100%]"
+      >
+      </div>
     </div>
     """
   end

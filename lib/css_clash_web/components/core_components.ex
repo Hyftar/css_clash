@@ -44,11 +44,10 @@ defmodule CssClashWeb.CoreComponents do
   attr :id, :string, doc: "the optional id of flash container"
   attr :flash, :map, default: %{}, doc: "the map of flash messages to display"
   attr :title, :string, default: nil
-  attr :kind, :atom, values: [:success, :info, :error], doc: "used for styling and flash lookup"
 
-  attr :auto_dismiss, :boolean,
-    default: true,
-    doc: "whether the flash should auto-dismiss after a delay"
+  attr :kind, :atom,
+    values: [:success, :info, :warning, :error],
+    doc: "used for styling and flash lookup"
 
   attr :auto_dismiss_delay,
        :integer,
@@ -60,7 +59,18 @@ defmodule CssClashWeb.CoreComponents do
   slot :inner_block, doc: "the optional inner block that renders the flash message"
 
   def flash(assigns) do
-    assigns = assign_new(assigns, :id, fn -> "flash-#{assigns.kind}" end)
+    assigns =
+      assign_new(assigns, :id, fn -> "flash-#{assigns.kind}" end)
+      |> assign(auto_dismiss: true)
+      |> assign(
+        auto_dismiss_delay:
+          case assigns.kind do
+            :success -> 3000
+            :info -> 3000
+            :warning -> 5000
+            :error -> 5000
+          end
+      )
 
     ~H"""
     <div
@@ -75,15 +85,19 @@ defmodule CssClashWeb.CoreComponents do
       {@rest}
     >
       <div class={[
-        "motion-safe:animate-wiggle pointer-events-auto w-80 sm:w-96 sm:max-w-96 text-wrap overflow-hidden rounded-lg bg-white shadow-lg ring-1 relative",
-        @kind == :error && "ring-red-500/20",
-        @kind in [:info, :success] && "ring-black/20"
+        "pointer-events-auto w-80 sm:w-96 sm:max-w-96 text-wrap overflow-hidden rounded-lg shadow-md ring-1 relative bg-base-300",
+        @kind == :error && "ring-red-500/20 motion-safe:animate-wiggle",
+        @kind == :warning && "ring-warning/20 motion-safe:animate-wiggle",
+        @kind == :info && "ring-info/20",
+        @kind == :success && "ring-success/20"
       ]}>
         <div class={[
-          "absolute bottom-0 left-0 h-1 transition-grow-right w-full duration-5000! motion-reduce:hidden",
-          @kind == :error && "bg-red-500/30",
-          @kind == :info && "bg-sky-500/30",
-          @kind == :success && "bg-green-500/30"
+          "absolute bottom-0 left-0 h-1 transition-grow-right w-full motion-reduce:hidden",
+          @kind == :error && "bg-error/30",
+          @kind == :warning && "bg-warning/30",
+          @kind == :info && "bg-info/30",
+          @kind == :success && "bg-success/30",
+          duration_class(@auto_dismiss_delay)
         ]} />
 
         <div class="p-4">
@@ -91,26 +105,36 @@ defmodule CssClashWeb.CoreComponents do
             <.icon
               :if={@kind == :info}
               name="hero-information-circle"
-              class="size-6 shrink-0 self-center text-sky-600"
+              class="size-6 shrink-0 self-center text-info"
             />
             <.icon
               :if={@kind == :error}
               name="hero-exclamation-circle"
-              class="size-6 shrink-0 self-center text-red-600"
+              class="size-6 shrink-0 self-center text-error"
             />
             <.icon
               :if={@kind == :success}
               name="hero-check-circle"
-              class="size-6 shrink-0 self-center text-green-600"
+              class="size-6 shrink-0 self-center text-success"
             />
             <div class="ml-3 w-0 flex-1 pt-0.5">
-              <p :if={@title} class="text-sm font-medium text-gray-900 mb-1">{@title}</p>
-              <p class="text-sm text-gray-500">{msg}</p>
+              <p
+                :if={@title}
+                class={[
+                  "text-sm font-medium mb-1",
+                  @kind == :error && "text-error-content",
+                  @kind == :success && "text-success-content",
+                  @kind == :info && "text-info-content"
+                ]}
+              >
+                {@title}
+              </p>
+              <p class="text-sm text-base-content">{msg}</p>
             </div>
             <div class="ml-4 flex shrink-0">
               <button
                 type="button"
-                class="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
+                class="inline-flex rounded-md text-base-content hover:text-gray-500 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-hidden"
               >
                 <span class="sr-only">{gettext("close")}</span>
                 <.icon name="hero-x-mark-mini" class="size-5" />
@@ -121,6 +145,14 @@ defmodule CssClashWeb.CoreComponents do
       </div>
     </div>
     """
+  end
+
+  defp duration_class(ms) do
+    case ms do
+      3000 -> "duration-3000!"
+      4000 -> "duration-4000!"
+      5000 -> "duration-5000!"
+    end
   end
 
   @doc """

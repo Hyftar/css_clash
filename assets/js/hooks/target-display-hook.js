@@ -69,7 +69,7 @@ export const TargetDisplayHook = {
           <meta name="viewport" content="width=500, initial-scale=1.0">
           <title>Target Display</title>
           <style>
-            body { overflow: hidden; }
+            body { overflow: hidden; width: 500px; height: 500px; background-color: #fff; }
             ${state.css}
           </style>
         </head>
