@@ -21,7 +21,7 @@ defmodule CssClashWeb.TargetLive.Index do
 
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
+    <Layouts.app flash={@flash} current_scope={@current_scope} current_path={@current_path}>
       <.header>
         Listing Targets
         <:actions>

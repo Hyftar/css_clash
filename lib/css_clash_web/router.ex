@@ -43,7 +43,10 @@ defmodule CssClashWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :targets,
-      on_mount: [{CssClashWeb.UserAuth, :require_authenticated}] do
+      on_mount: [
+        {CssClashWeb.UserAuth, :require_authenticated},
+        {CssClashWeb.Hooks.Navigation, :save_request_uri}
+      ] do
       live "/", TargetLive.Index, :index
       live "/:id", TargetLive.Show, :show
     end
@@ -86,7 +89,10 @@ defmodule CssClashWeb.Router do
     pipe_through [:browser, :require_authenticated_user]
 
     live_session :require_authenticated_user,
-      on_mount: [{CssClashWeb.UserAuth, :require_authenticated}] do
+      on_mount: [
+        {CssClashWeb.UserAuth, :require_authenticated},
+        {CssClashWeb.Hooks.Navigation, :save_request_uri}
+      ] do
       live "/users/settings", UserLive.Settings, :edit
       live "/users/settings/confirm-email/:token", UserLive.Settings, :confirm_email
     end
@@ -98,7 +104,10 @@ defmodule CssClashWeb.Router do
     pipe_through [:browser]
 
     live_session :current_user,
-      on_mount: [{CssClashWeb.UserAuth, :mount_current_scope}] do
+      on_mount: [
+        {CssClashWeb.UserAuth, :mount_current_scope},
+        {CssClashWeb.Hooks.Navigation, :save_request_uri}
+      ] do
       live "/users/register", UserLive.Registration, :new
       live "/users/log-in", UserLive.Login, :new
       live "/users/log-in/:token", UserLive.Confirmation, :new

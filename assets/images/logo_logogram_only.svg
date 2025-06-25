@@ -1,6 +1,6 @@
 <svg width="250" height="200" viewBox="0 0 250 200" xmlns="http://www.w3.org/2000/svg">
   <g text-anchor="middle">
-    <text x="70" y="160" font-family="Georgia, serif" font-size="200" font-weight="bold" fill="#FF4500">{</text>
-    <text x="180" y="160" font-family="Georgia, serif" font-size="200" font-weight="bold" fill="#00BFFF">}</text>
+    <text x="50" y="160" font-family="Georgia, serif" font-size="200" font-weight="bold" fill="#FF4500">{</text>
+    <text x="200" y="160" font-family="Georgia, serif" font-size="200" font-weight="bold" fill="#00BFFF">}</text>
   </g>
 </svg>

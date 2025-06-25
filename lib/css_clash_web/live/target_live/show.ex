@@ -26,7 +26,7 @@ defmodule CssClashWeb.TargetLive.Show do
 
   def render(assigns) do
     ~H"""
-    <Layouts.app flash={@flash}>
+    <Layouts.app flash={@flash} current_scope={@current_scope} current_path={@current_path}>
       <div id="confetti-container" class="hidden" phx-hook="ConfettiHook"></div>
       <.live_component
         id={"target-display-container-#{@target.id}"}
