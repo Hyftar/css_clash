@@ -1,6 +1,4 @@
 defmodule CssClashWeb.Helpers.TargetImage do
-  use PhoenixHTMLHelpers
-
   @moduledoc """
   Helper functions for generating target image URLs.
 

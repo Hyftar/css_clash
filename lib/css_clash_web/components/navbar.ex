@@ -1,8 +1,6 @@
 defmodule CssClashWeb.Components.Navbar do
   use CssClashWeb, :html
 
-  import CssClashWeb.Layouts
-
   import Tails
 
   attr :current_path, :string, default: "/"
@@ -24,7 +22,7 @@ defmodule CssClashWeb.Components.Navbar do
             </div>
           </div>
           <div class="hidden sm:ml-6 sm:flex sm:items-center">
-            <.theme_toggle />
+            <CssClashWeb.Layouts.theme_toggle />
             <div class="relative ml-3" phx-click-away={hide_user_menu()}>
               <div>
                 <button
