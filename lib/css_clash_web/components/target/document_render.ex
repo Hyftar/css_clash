@@ -2,6 +2,7 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
   use CssClashWeb, :html
 
   import CssClashWeb.Components.Target.TargetImage
+  import CssClashWeb.Components.Target.TargetHoverDiff
 
   attr :unique_id, :string, required: true
   attr :diff_mode, :boolean, required: true
@@ -42,17 +43,19 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
           </div>
         </div>
         <div class="relative">
+          <.hover_diff unique_id={@unique_id} target={@target} active={@hover_mode} />
           <.target_image
             :if={@diff_mode}
             target={@target}
-            class="min-w-[500px] min-h-[500px] absolute top-0 left-0 mix-blend-difference"
+            class="min-w-[500px] min-h-[500px] absolute top-0 left-0 mix-blend-difference pointer-events-none select-none"
             alt="target image for difference mode"
           />
+
           <iframe
             id={"document-render-#{@target.id}"}
             data-component-name="document-render"
             sandbox=""
-            class="min-w-[500px] min-h-[500px]"
+            class="min-w-[500px] min-h-[500px] pointer-events-none select-none"
             width="500px"
             height="500px"
             phx-update="ignore"

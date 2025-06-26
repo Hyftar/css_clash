@@ -89,9 +89,12 @@ defmodule CssClashWeb.Components.Target.Display do
   end
 
   def handle_event("toggle_hover_mode", %{"checked" => value}, socket) do
+    is_active = not String.to_existing_atom(value)
+
     socket =
       socket
-      |> assign(hover_mode: not String.to_existing_atom(value))
+      |> assign(hover_mode: is_active)
+      |> push_event("css_clash:toggle_hover_mode", %{active: is_active})
 
     {:noreply, socket}
   end

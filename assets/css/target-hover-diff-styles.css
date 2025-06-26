@@ -1,0 +1,77 @@
+[phx-hook="TargetHoverDiffHook"] .hover-diff-left,
+[phx-hook="TargetHoverDiffHook"] .hover-diff-right {
+  content: "";
+  will-change: width;
+  background-image: var(--image-path);
+  display: block;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  user-select: none;
+  pointer-events: none;
+}
+
+[phx-hook="TargetHoverDiffHook"] .hover-diff-left {
+  z-index: 2;
+  width: var(--hover-x-position);
+  filter: opacity(15%);
+  left: 0;
+}
+
+[phx-hook="TargetHoverDiffHook"] .hover-diff-right {
+  z-index: 3;
+  background-position: right center;
+  width: calc(100% - var(--hover-x-position));
+  right: 0;
+}
+
+[phx-hook="TargetHoverDiffHook"] .position-label {
+  --arrow-height: 10px;
+  position: absolute;
+  top: calc(-2em - var(--arrow-height) * 1.5);
+  left: 0;
+  right: 0;
+  width: fit-content;
+  margin-inline: auto;
+  transform: translateX(
+    calc(var(--hover-x-position) - var(--parent-width) / 2)
+  );
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+  padding: 0.25em;
+  border-radius: 4px;
+  pointer-events: none;
+  user-select: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    bottom: calc(var(--arrow-height) * -1);
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: 0;
+    height: 0;
+    border-left: var(--arrow-height) solid transparent;
+    border-right: var(--arrow-height) solid transparent;
+    border-top: var(--arrow-height) solid var(--color-primary);
+  }
+}
+
+[phx-hook="TargetHoverDiffHook"]::before {
+  z-index: 4;
+  pointer-events: none;
+  user-select: none;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  width: 3px;
+  height: 100%;
+  background-color: var(--color-primary);
+  transform: translateX(
+    calc(var(--hover-x-position) - var(--parent-width) / 2)
+  );
+}
