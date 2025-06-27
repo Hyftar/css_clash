@@ -17,8 +17,6 @@ defmodule CssClashWeb.TargetLive.Show do
       |> put_flash(
         :info,
         dgettext("game_display", "color_copied_to_clipboard", color: color)
-        # auto_dismiss: true,
-        # auto_dismiss_delay: 3000
       )
 
     {:noreply, socket}

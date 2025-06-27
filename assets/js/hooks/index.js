@@ -6,10 +6,10 @@ import { TargetDisplayHook } from "./target-display-hook"
 import { TargetHoverDiffHook } from "./target-hover-diff-hook"
 
 export const Hooks = {
-  TargetDisplayHook,
   CodeMirrorHook,
-  CopyTextHook,
   ConfettiHook,
+  CopyTextHook,
   FlashAutoDismiss,
+  TargetDisplayHook,
   TargetHoverDiffHook
 }
