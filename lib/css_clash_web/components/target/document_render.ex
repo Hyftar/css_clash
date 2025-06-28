@@ -13,9 +13,9 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
 
   def document_render(assigns) do
     ~H"""
-    <div class="flex justify-between items-end gap-4">
-      <div>
-        <div class="flex justify-between">
+    <.tabs id={"document-render-tabs-#{@unique_id}"} class="tabs-box">
+      <:tab label={dgettext("game_display", "render_preview")}>
+        <div class="flex justify-center gap-8">
           <div>
             <input
               id={"diff-mode-#{@unique_id}"}
@@ -42,50 +42,54 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
             <label for={"hover-mode-#{@unique_id}"}>{dgettext("game_display", "hover_mode")}</label>
           </div>
         </div>
-        <div class="relative">
-          <.hover_diff unique_id={@unique_id} target={@target} active={@hover_mode} />
-          <.target_image
-            :if={@diff_mode}
-            target={@target}
-            class="min-w-[500px] min-h-[500px] absolute top-0 left-0 mix-blend-difference pointer-events-none select-none"
-            alt="target image for difference mode"
-          />
+        <div class="flex justify-center mt-4">
+          <div class="relative">
+            <.hover_diff unique_id={@unique_id} target={@target} active={@hover_mode} />
+            <.target_image
+              :if={@diff_mode}
+              target={@target}
+              class="w-[500px] h-[500px] absolute top-0 left-0 mix-blend-difference pointer-events-none select-none"
+              alt="target image for difference mode"
+            />
 
-          <iframe
-            id={"document-render-#{@target.id}"}
-            data-component-name="document-render"
-            sandbox=""
-            class="min-w-[500px] min-h-[500px] pointer-events-none select-none"
-            width="500px"
-            height="500px"
-            phx-update="ignore"
-          >
-          </iframe>
+            <iframe
+              id={"document-render-#{@target.id}"}
+              data-component-name="document-render"
+              sandbox=""
+              class="min-w-[500px] min-h-[500px] pointer-events-none select-none"
+              width="500px"
+              height="500px"
+              phx-update="ignore"
+            >
+            </iframe>
+          </div>
         </div>
-      </div>
-      <div>
-        <.target_image
-          target={@target}
-          class="min-w-[500px] min-h-[500px]"
-          alt="target image reference"
-        />
-      </div>
-    </div>
+      </:tab>
+
+      <:tab label={dgettext("game_display", "target_preview")} is_active={true}>
+        <div class="flex justify-center mt-8">
+          <.target_image
+            target={@target}
+            class="min-w-[500px] min-h-[500px]"
+            alt="target image reference"
+          />
+        </div>
+      </:tab>
+    </.tabs>
+
     <div class="flex flex-col gap-4 grow-1 w-full mt-4">
       <div class="flex justify-center flex-wrap gap-2">
         <div
           :for={{color, index} <- @target.colors |> Stream.with_index()}
           id={"color-#{index}"}
-          class="text-xs flex items-center gap-2 py-1 px-3
-            rounded-full bg-neutral text-slate-200 cursor-pointer
-            hover:brightness-125"
+          class="py-4 badge bg-base-200 badge-soft cursor-pointer hover:bg-base-100"
           phx-click="copied"
           phx-value-color={color}
           phx-hook="CopyTextHook"
           data-copy-text={color}
         >
           <span
-            class="w-[1em] h-[1em] rounded-full outline outline-1 outline-white"
+            class="size-4 rounded-full outline outline-2 outline-base-content"
             style={"background-color: #{color}"}
           >
           </span>

@@ -11,32 +11,42 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/css_clash_web/components/core_components.ex:389
+#: lib/css_clash_web/components/core_components.ex:421
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Actions"
 
-#: lib/css_clash_web/components/layouts.ex:74
+#: lib/css_clash_web/components/layouts.ex:56
 #, elixir-autogen, elixir-format
 msgid "Attempting to reconnect"
 msgstr "Attempting to reconnect"
 
-#: lib/css_clash_web/components/layouts.ex:86
+#: lib/css_clash_web/components/layouts.ex:68
 #, elixir-autogen, elixir-format
 msgid "Hang in there while we get back on track"
 msgstr "Hang in there while we get back on track"
 
-#: lib/css_clash_web/components/layouts.ex:81
+#: lib/css_clash_web/components/layouts.ex:63
 #, elixir-autogen, elixir-format
 msgid "Something went wrong!"
 msgstr "Something went wrong!"
 
-#: lib/css_clash_web/components/layouts.ex:69
+#: lib/css_clash_web/components/layouts.ex:51
 #, elixir-autogen, elixir-format
 msgid "We can't find the internet"
 msgstr "We can't find the internet"
 
-#: lib/css_clash_web/components/core_components.ex:115
+#: lib/css_clash_web/components/core_components.ex:139
 #, elixir-autogen, elixir-format
 msgid "close"
 msgstr "close"
+
+#: lib/css_clash_web/components/navbar.ex:85
+#, elixir-autogen, elixir-format
+msgid "open_main_menu"
+msgstr "Open main menu"
+
+#: lib/css_clash_web/components/navbar.ex:37
+#, elixir-autogen, elixir-format
+msgid "open_user_menu"
+msgstr "Open user menu"

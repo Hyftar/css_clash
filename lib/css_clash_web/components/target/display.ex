@@ -165,36 +165,38 @@ defmodule CssClashWeb.Components.Target.Display do
     assigns = assign(assigns, readonly: assigns.user_submission.score == 1.0)
 
     ~H"""
-    <div
-      id={"target-display-#{@current_user.id}"}
-      class="flex justify-between gap-4"
-      phx-hook="TargetDisplayHook"
-    >
-      <div class="grow flex flex-col h-[80vh] overflow-hidden min-w-[250px] max-w-[750px]">
-        <.editor
-          title={dgettext("game_display", "html_editor")}
-          type="html"
-          initial_content={@initial_html}
-          user_id={@current_user.id}
-          readonly={@readonly}
-        />
-        <.editor
-          title={dgettext("game_display", "css_editor")}
-          type="css"
-          initial_content={@initial_css}
-          user_id={@current_user.id}
-          readonly={@readonly}
-        />
-      </div>
-      <div>
-        <.document_render
-          unique_id={@current_user.id}
-          target={@target}
-          diff_mode={@diff_mode}
-          hover_mode={@hover_mode}
-          score={@score}
-          myself={@myself}
-        />
+    <div>
+      <div
+        id={"target-display-#{@current_user.id}"}
+        class="flex justify-between gap-4"
+        phx-hook="TargetDisplayHook"
+      >
+        <div class="grow flex flex-col h-[80vh] overflow-hidden min-w-[250px] max-w-[750px]">
+          <.editor
+            title={dgettext("game_display", "html_editor")}
+            type="html"
+            initial_content={@initial_html}
+            user_id={@current_user.id}
+            readonly={@readonly}
+          />
+          <.editor
+            title={dgettext("game_display", "css_editor")}
+            type="css"
+            initial_content={@initial_css}
+            user_id={@current_user.id}
+            readonly={@readonly}
+          />
+        </div>
+        <div>
+          <.document_render
+            unique_id={@current_user.id}
+            target={@target}
+            diff_mode={@diff_mode}
+            hover_mode={@hover_mode}
+            score={@score}
+            myself={@myself}
+          />
+        </div>
       </div>
     </div>
     """

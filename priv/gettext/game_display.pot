@@ -16,32 +16,47 @@ msgstr ""
 msgid "color_copied_to_clipboard"
 msgstr ""
 
-#: lib/css_clash_web/components/target/display.ex:191
+#: lib/css_clash_web/components/target/display.ex:183
 #, elixir-autogen, elixir-format
 msgid "css_editor"
 msgstr ""
 
-#: lib/css_clash_web/components/target/display.ex:175
+#: lib/css_clash_web/components/target/display.ex:176
 #, elixir-autogen, elixir-format
 msgid "html_editor"
 msgstr ""
 
-#: lib/css_clash_web/components/target/display.ex:171
-#, elixir-autogen, elixir-format
-msgid "score"
-msgstr ""
-
-#: lib/css_clash_web/components/target/document_render.ex:73
+#: lib/css_clash_web/components/target/document_render.ex:110
 #, elixir-autogen, elixir-format
 msgid "submit"
 msgstr ""
 
-#: lib/css_clash_web/components/target/document_render.ex:70
+#: lib/css_clash_web/components/target/document_render.ex:107
 #, elixir-autogen, elixir-format
 msgid "working"
 msgstr ""
 
-#: lib/css_clash_web/components/target/document_render.ex:83
+#: lib/css_clash_web/components/target/document_render.ex:120
 #, elixir-autogen, elixir-format
 msgid "reset"
+msgstr ""
+
+#: lib/css_clash_web/components/target/document_render.ex:29
+#, elixir-autogen, elixir-format
+msgid "diff_mode"
+msgstr ""
+
+#: lib/css_clash_web/components/target/document_render.ex:42
+#, elixir-autogen, elixir-format
+msgid "hover_mode"
+msgstr ""
+
+#: lib/css_clash_web/components/target/document_render.ex:17
+#, elixir-autogen, elixir-format
+msgid "render_preview"
+msgstr ""
+
+#: lib/css_clash_web/components/target/document_render.ex:69
+#, elixir-autogen, elixir-format
+msgid "target_preview"
 msgstr ""

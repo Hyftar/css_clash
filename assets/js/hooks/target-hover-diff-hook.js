@@ -1,11 +1,9 @@
 export const TargetHoverDiffHook = {
   mounted() {
-    const parentWidth = this.el.parentElement.offsetWidth;
-
     this.el.style.setProperty("--image-path", `url(${this.el.dataset.imagePath})`)
-    this.el.style.setProperty("--parent-width", `${parentWidth}px`)
+    this.el.style.setProperty("--hover-x-position", `50cqw`)
 
-    this.el.querySelectorAll(".position-label").forEach(el => el.innerText = `${parentWidth / 2}px`)
+    this.el.querySelectorAll(".position-label").forEach(el => el.innerText = '--')
 
     this.bindEvents()
 

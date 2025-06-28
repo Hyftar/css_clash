@@ -514,6 +514,33 @@ defmodule CssClashWeb.CoreComponents do
     """
   end
 
+  attr :id, :string, required: true
+  attr :class, :string, default: ""
+
+  slot :tab, required: true do
+    attr :is_active, :boolean
+    attr :label, :string, required: true
+  end
+
+  def tabs(assigns) do
+    ~H"""
+    <div id={@id} class={classes(["tabs", @class])}>
+      <%= for {tab, index} <- @tab |> Enum.with_index() do %>
+        <div
+          id={"#{@id}-tab-#{index}"}
+          class={["tab", tab[:is_active] && "tab-active"]}
+          phx-click={JS.remove_class("tab-active", to: "##{@id} .tab") |> JS.add_class("tab-active")}
+        >
+          {tab.label}
+        </div>
+        <div id={"#{@id}-content-#{index}"} class="tab-content">
+          {render_slot(tab, :inner_block)}
+        </div>
+      <% end %>
+    </div>
+    """
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do

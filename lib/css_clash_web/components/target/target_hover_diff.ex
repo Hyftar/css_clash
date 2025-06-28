@@ -12,7 +12,7 @@ defmodule CssClashWeb.Components.Target.TargetHoverDiff do
       phx-hook="TargetHoverDiffHook"
       phx-update="ignore"
       data-image-path={target_image_path(@target)}
-      class="absolute h-full w-full"
+      class="absolute w-[500px] h-[500px]"
     >
       <div class="hover-diff-left" />
       <label class="position-label" />

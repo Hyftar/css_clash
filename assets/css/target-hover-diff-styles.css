@@ -1,8 +1,13 @@
+[phx-hook="TargetHoverDiffHook"] {
+  container: target-hover-diff / inline-size;
+}
+
 [phx-hook="TargetHoverDiffHook"] .hover-diff-left,
 [phx-hook="TargetHoverDiffHook"] .hover-diff-right {
   content: "";
   will-change: width;
   background-image: var(--image-path);
+  background-size: cover;
   display: block;
   position: absolute;
   top: 0;
@@ -26,16 +31,20 @@
 }
 
 [phx-hook="TargetHoverDiffHook"] .position-label {
+  display: inline-block;
+  content-visibility: hidden;
+}
+
+[phx-hook="TargetHoverDiffHook"]:hover .position-label {
   --arrow-height: 10px;
+  content-visibility: visible;
   position: absolute;
   top: calc(-2em - var(--arrow-height) * 1.5);
   left: 0;
   right: 0;
   width: fit-content;
   margin-inline: auto;
-  transform: translateX(
-    calc(var(--hover-x-position) - var(--parent-width) / 2)
-  );
+  transform: translateX(calc(var(--hover-x-position) - 50cqw));
   background: var(--color-primary);
   color: var(--color-primary-content);
   padding: 0.25em;
@@ -71,7 +80,5 @@
   width: 3px;
   height: 100%;
   background-color: var(--color-primary);
-  transform: translateX(
-    calc(var(--hover-x-position) - var(--parent-width) / 2)
-  );
+  transform: translateX(calc(var(--hover-x-position) - 50cqw));
 }

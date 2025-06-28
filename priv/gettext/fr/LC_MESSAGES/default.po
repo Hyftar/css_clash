@@ -11,32 +11,42 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-#: lib/css_clash_web/components/core_components.ex:389
+#: lib/css_clash_web/components/core_components.ex:421
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Actions"
 
-#: lib/css_clash_web/components/layouts.ex:74
+#: lib/css_clash_web/components/layouts.ex:56
 #, elixir-autogen, elixir-format
 msgid "Attempting to reconnect"
 msgstr "Tentative de reconnexion"
 
-#: lib/css_clash_web/components/layouts.ex:86
+#: lib/css_clash_web/components/layouts.ex:68
 #, elixir-autogen, elixir-format
 msgid "Hang in there while we get back on track"
 msgstr "Patientez pendant que nous nous remettons sur la voie"
 
-#: lib/css_clash_web/components/layouts.ex:81
+#: lib/css_clash_web/components/layouts.ex:63
 #, elixir-autogen, elixir-format
 msgid "Something went wrong!"
 msgstr "Quelque chose s'est mal passé !"
 
-#: lib/css_clash_web/components/layouts.ex:69
+#: lib/css_clash_web/components/layouts.ex:51
 #, elixir-autogen, elixir-format
 msgid "We can't find the internet"
 msgstr "Nous ne pouvons pas trouver l'internet"
 
-#: lib/css_clash_web/components/core_components.ex:115
+#: lib/css_clash_web/components/core_components.ex:139
 #, elixir-autogen, elixir-format
 msgid "close"
 msgstr "fermer"
+
+#: lib/css_clash_web/components/navbar.ex:85
+#, elixir-autogen, elixir-format
+msgid "open_main_menu"
+msgstr "Ouvrir le menu principal"
+
+#: lib/css_clash_web/components/navbar.ex:37
+#, elixir-autogen, elixir-format
+msgid "open_user_menu"
+msgstr "Ouvrir le menu utilisateur"
