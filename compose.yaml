@@ -16,6 +16,8 @@ services:
       db:
         condition: service_healthy
         restart: true
+      gotenberg:
+        condition: service_healthy
     links:
       - db
     env_file: ".env"
@@ -31,6 +33,12 @@ services:
       - "--chromium-auto-start=true"
       - "--chromium-allow-insecure-localhost=true"
       - "--chromium-ignore-certificate-errors=true"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 60s
+      retries: 5
+      start_period: 30s
+      timeout: 10s
 
   db:
     build:
