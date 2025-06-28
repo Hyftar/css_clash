@@ -62,7 +62,7 @@ defmodule CssClash.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:bandit, "~> 1.5"},
       {:hackney, "~> 1.9"},
-      {:wallaby, "~> 0.30"},
+      {:httpoison, "~> 2.2"},
       {:image, "~> 0.59.3"},
       {:uuid, "~> 1.1"},
       {:tails, github: "rum-and-code/tails", branch: "main"}

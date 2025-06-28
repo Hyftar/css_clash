@@ -74,31 +74,6 @@ config :logger, :default_formatter,
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 
-config :wallaby,
-  driver: Wallaby.Chrome,
-  base_url: "http://127.0.0.1:4000",
-  chromedriver: [
-    capabilities: %{
-      javascriptEnabled: true,
-      loadImages: false,
-      version: "",
-      rotatable: false,
-      takesScreenshot: true,
-      cssSelectorsEnabled: true,
-      nativeEvents: false,
-      platform: "ANY",
-      unhandledPromptBehavior: "ignore",
-      loggingPrefs: %{
-        browser: "WARNING"
-      },
-      chromeOptions: %{
-        args: [
-          "--blink-settings=imagesEnabled=false"
-        ]
-      }
-    }
-  ]
-
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{config_env()}.exs"

@@ -19,12 +19,6 @@ defmodule CssClashWeb.Router do
 
   pipeline :renderer do
     plug :accepts, ["html"]
-    plug :fetch_session
-    plug :fetch_live_flash
-    plug :put_root_layout, html: {CssClashWeb.Layouts, :render}
-    plug :protect_from_forgery
-    plug :put_secure_browser_headers
-    plug :fetch_current_scope_for_user
 
     plug(
       CssClashWeb.Plugs.AllowlistIps,
@@ -63,7 +57,7 @@ defmodule CssClashWeb.Router do
   scope "/render", CssClashWeb do
     pipe_through [:renderer]
 
-    get "/html_render", HtmlRenderController, :render_html
+    get "/submission/:id", SubmissionRenderController, :render_submission
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

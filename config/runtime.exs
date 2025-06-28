@@ -117,3 +117,7 @@ if config_env() == :prod do
   #
   # See https://hexdocs.pm/swoosh/Swoosh.html#module-installation for details.
 end
+
+config :css_clash,
+  gotenberg_url: System.get_env("GOTENBERG_URL") || "http://localhost:3000",
+  internal_app_url: System.get_env("INTERNAL_APP_URL") || "http://host.docker.internal:4000"

@@ -20,6 +20,18 @@ services:
       - db
     env_file: ".env"
 
+  gotenberg:
+    image: gotenberg/gotenberg:latest
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-auto-start=true"
+      - "--chromium-allow-insecure-localhost=true"
+      - "--chromium-ignore-certificate-errors=true"
+
   db:
     build:
       context: .
