@@ -1,6 +1,7 @@
 import { Compartment, EditorState } from "@codemirror/state"
 import { EditorView, keymap, scrollPastEnd } from "@codemirror/view"
 import { basicSetup } from "codemirror"
+import { abbreviationTracker, emmetConfig, expandAbbreviation } from '@emmetio/codemirror6-plugin';
 import { css } from "@codemirror/lang-css"
 import { html } from "@codemirror/lang-html"
 import { indentWithTab } from "@codemirror/commands"
@@ -38,8 +39,16 @@ export const CodeMirrorHook = {
     const extensions = [
       basicSetup,
       scrollPastEnd(),
-      keymap.of([indentWithTab]),
-      this.getLanguage(),
+      keymap.of(
+        [
+          indentWithTab,
+          {
+            key: 'Cmd-e',
+            run: expandAbbreviation
+          }
+        ]
+      ),
+      ...this.getLanguageSpecificExtensions(),
       onUpdate,
       themeCompartment.of(isDark ? oneDark : EditorView.theme({}, { dark: false }))
     ]
@@ -90,12 +99,12 @@ export const CodeMirrorHook = {
     this.el.editor.dispatch(transaction)
   },
 
-  getLanguage() {
-    switch (this.el.getAttribute("data-lang")) {
+  getLanguageSpecificExtensions() {
+    switch (this.language) {
       case "html":
-        return html()
+        return [html(), emmetConfig.of({syntax: "html"}), abbreviationTracker({syntax: "html"})]
       case "css":
-        return css()
+        return [css(), emmetConfig.of({syntax: "css"}), abbreviationTracker({syntax: "css"})]
       default:
         throw new Error("Unsupported language")
     }
