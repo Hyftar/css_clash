@@ -15,7 +15,7 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
     ~H"""
     <.tabs id={"document-render-tabs-#{@unique_id}"} class="tabs-box">
       <:tab label={dgettext("game_display", "render_preview")}>
-        <div class="flex justify-center gap-8">
+        <div class="flex justify-center gap-8 min-h-8 mt-4">
           <div>
             <input
               id={"diff-mode-#{@unique_id}"}
@@ -42,7 +42,7 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
             <label for={"hover-mode-#{@unique_id}"}>{dgettext("game_display", "hover_mode")}</label>
           </div>
         </div>
-        <div class="flex justify-center mt-4">
+        <div class="flex justify-center mt-4 mb-8 mx-8">
           <div class="relative">
             <.hover_diff unique_id={@unique_id} target={@target} active={@hover_mode} />
             <.target_image
@@ -67,7 +67,7 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
       </:tab>
 
       <:tab label={dgettext("game_display", "target_preview")} is_active={true}>
-        <div class="flex justify-center mt-8">
+        <div class="flex justify-center mt-16 mb-8 mx-8">
           <.target_image
             target={@target}
             class="min-w-[500px] min-h-[500px]"
@@ -96,30 +96,6 @@ defmodule CssClashWeb.Components.Target.DocumentRender do
           <span class="mb-0.5 min-w-12">{color}</span>
           <.icon name="hero-clipboard-document-list-solid" />
         </div>
-      </div>
-      <div class="flex gap-2 justify-center">
-        <.button
-          variant="primary"
-          disabled={@score != nil && (@score.loading || @score.result == 1.0)}
-          phx-click={JS.dispatch("css_clash:submit", to: "#target-display-#{@unique_id}")}
-        >
-          <%= if @score && @score.loading do %>
-            <span class="me-2">{dgettext("game_display", "working")}</span>
-            <.spinner />
-          <% else %>
-            <span class="me-2">{dgettext("game_display", "submit")}</span>
-            <.icon name="hero-paper-airplane-solid" class="-rotate-45 -translate-y-0.5" />
-          <% end %>
-        </.button>
-        <.button
-          disabled={!@score || @score.result != 1.0}
-          variant="secondary"
-          phx-click="reset"
-          phx-target={@myself}
-        >
-          {dgettext("game_display", "reset")}
-          <.icon name="hero-sparkles" class="size-6" />
-        </.button>
       </div>
     </div>
     """

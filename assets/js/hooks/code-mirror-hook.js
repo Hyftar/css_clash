@@ -11,12 +11,14 @@ export const CodeMirrorHook = {
   mounted() {
     this.editorFor = this.el.dataset.editorFor
     this.language = this.el.dataset.lang
-    this.readonly = this.el.dataset.readonly === "true"
 
+    this.handleEvent("css_clash:set_readonly", ({ readonly }) => this.setReadonly(readonly))
     this.handleEvent("css_clash:reset_editor", ({ fullReset }) => this.resetEditor(fullReset))
 
-
     const initialContent = this.el.dataset.initialContent || ""
+    const readonly = this.el.dataset.readonly === "true"
+
+    this.readonlyCompartment = new Compartment()
 
     const themeCompartment = new Compartment()
     const isDark = this.isDarkMode()
@@ -53,9 +55,7 @@ export const CodeMirrorHook = {
       themeCompartment.of(isDark ? oneDark : EditorView.theme({}, { dark: false }))
     ]
 
-    if (this.readonly) {
-      extensions.push(EditorState.readOnly.of(true))
-    }
+    extensions.push(this.readonlyCompartment.of(EditorState.readOnly.of(readonly)))
 
     const state = EditorState.create(
       {
@@ -97,6 +97,14 @@ export const CodeMirrorHook = {
     })
 
     this.el.editor.dispatch(transaction)
+
+    this.setReadonly(false)
+  },
+
+  setReadonly(readonly) {
+    this.el.editor.dispatch({
+      effects: this.readonlyCompartment.reconfigure(EditorState.readOnly.of(readonly))
+    })
   },
 
   getLanguageSpecificExtensions() {

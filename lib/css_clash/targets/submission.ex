@@ -19,7 +19,7 @@ defmodule CssClash.Targets.Submission do
   def submit_changeset(submission, attrs) do
     submission
     |> cast(attrs, [:html, :css])
-    |> validate_required([:html, :css])
+    |> validate_required([])
   end
 
   @required_fields ~w(user_id target_id)a

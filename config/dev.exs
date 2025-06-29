@@ -60,7 +60,8 @@ config :css_clash, CssClashWeb.Endpoint,
     patterns: [
       ~r"priv/static/(?!uploads/).*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
-      ~r"lib/css_clash_web/(controllers|live|components)/.*(ex|heex)$"
+      ~r"lib/css_clash_web/(controllers|live|components)/.*(ex|heex)$",
+      ~r"lib/css_clash/.*(ex|heex)$"
     ]
   ]
 

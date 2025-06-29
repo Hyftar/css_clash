@@ -117,19 +117,16 @@ defmodule CssClashWeb.CoreComponents do
               name="hero-check-circle"
               class="size-6 shrink-0 self-center text-success"
             />
-            <div class="ml-3 w-0 flex-1 pt-0.5">
+            <div class="ml-3 w-0 flex-1 text-base-content pt-0.5">
               <p
                 :if={@title}
                 class={[
-                  "text-sm font-medium mb-1",
-                  @kind == :error && "text-error-content",
-                  @kind == :success && "text-success-content",
-                  @kind == :info && "text-info-content"
+                  "text-sm font-medium  mb-1"
                 ]}
               >
                 {@title}
               </p>
-              <p class="text-sm text-base-content">{msg}</p>
+              <p class="text-sm">{msg}</p>
             </div>
             <div class="ml-4 flex shrink-0">
               <button

@@ -115,6 +115,65 @@ defmodule CssClash.Targets do
     Target.changeset(target, attrs)
   end
 
+  def get_success_rate(target_id) do
+    from(
+      s in Submission,
+      where: s.target_id == ^target_id and s.score == 1.0,
+      group_by: [s.target_id],
+      select:
+        count(s.user_id, :distinct) /
+          fragment(
+            "cast(? as float)",
+            subquery(
+              from(
+                s in Submission,
+                where: s.target_id == ^target_id,
+                group_by: [s.target_id],
+                select: fragment("GREATEST(?, 1)", count(s.user_id, :distinct))
+              )
+            )
+          )
+    )
+    |> Repo.one()
+  end
+
+  def count_players(target_id) do
+    from(
+      s in Submission,
+      where: s.target_id == ^target_id,
+      group_by: [s.target_id],
+      select: count(s.user_id, :distinct)
+    )
+    |> Repo.one()
+  end
+
+  def get_user_highscore(target_id, user_id) do
+    from(
+      s in Submission,
+      where: s.target_id == ^target_id and s.user_id == ^user_id,
+      select: max(s.score)
+    )
+    |> Repo.one()
+  end
+
+  def count_submissions(target_id, user_id) do
+    from(
+      s in Submission,
+      where: s.target_id == ^target_id and s.user_id == ^user_id and not is_nil(s.score),
+      select: count(s.id)
+    )
+    |> Repo.one()
+  end
+
+  def count_submissions(target_id) do
+    from(
+      s in Submission,
+      where: s.target_id == ^target_id and not is_nil(s.score),
+      select: count(s.id)
+    )
+    |> Repo.one()
+  end
+
   def create_or_get_latest_submission(user_id, target_id) do
     from(
       s in Submission,

@@ -8,6 +8,7 @@ defmodule CssClashWeb.Components.Target.Display do
   alias Phoenix.LiveView.AsyncResult
 
   import CssClashWeb.Components.Target.DocumentRender
+  import CssClashWeb.Components.Target.TargetStats
 
   def update(assigns, socket) do
     user_submission =
@@ -19,17 +20,16 @@ defmodule CssClashWeb.Components.Target.Display do
 
     socket =
       socket
+      |> assign(target: assigns.target)
+      |> assign(current_user: assigns.current_user)
       |> assign(diff_mode: false)
       |> assign(hover_mode: true)
       |> assign(show_success_message: false)
-      |> assign(
-        score: if(user_submission.score, do: AsyncResult.ok(user_submission.score), else: nil)
-      )
-      |> assign(current_user: assigns.current_user)
-      |> assign(target: assigns.target)
+      |> assign(score: AsyncResult.ok(user_submission.score))
       |> assign(user_submission: user_submission)
       |> assign(initial_html: user_submission.html)
       |> assign(initial_css: user_submission.css)
+      |> update_stats()
       |> maybe_congratulate_user()
 
     {:ok, socket}
@@ -67,6 +67,7 @@ defmodule CssClashWeb.Components.Target.Display do
     socket =
       socket
       |> assign(score: AsyncResult.loading())
+      |> push_event("css_clash:set_readonly", %{readonly: true})
       |> start_async(
         :evaluate_submission_score,
         fn ->
@@ -109,12 +110,13 @@ defmodule CssClashWeb.Components.Target.Display do
 
     socket =
       socket
-      |> assign(score: nil)
+      |> assign(score: AsyncResult.ok(nil))
       |> assign(user_submission: new_submission)
       |> assign(show_success_message: false)
       |> assign(initial_html: "")
       |> assign(initial_css: "")
       |> push_event("css_clash:reset_editor", %{"fullReset" => true})
+      |> push_event("css_clash:set_readonly", %{readonly: false})
 
     {:noreply, socket}
   end
@@ -127,7 +129,9 @@ defmodule CssClashWeb.Components.Target.Display do
     socket =
       socket
       |> assign(score: AsyncResult.ok(score, new_score))
+      |> push_event("css_clash:set_readonly", %{readonly: new_score == 1.0})
       |> assign(user_submission: submission)
+      |> update_stats()
       |> maybe_congratulate_user()
 
     {:noreply, socket}
@@ -138,17 +142,35 @@ defmodule CssClashWeb.Components.Target.Display do
         {:exit, reason},
         %{assigns: %{score: score}} = socket
       ) do
-    {:noreply, assign(socket, :score, AsyncResult.failed(score, {:exit, reason}))}
+    socket =
+      socket
+      |> update_stats()
+      |> assign(:score, AsyncResult.failed(score, {:exit, reason}))
+
+    {:noreply, socket}
   end
 
-  def maybe_congratulate_user(
-        %{
-          assigns: %{
-            score: %{result: 1.0},
-            user_submission: %Submission{congratulated: false} = submission
-          }
-        } = socket
-      ) do
+  defp update_stats(socket) do
+    assigns = socket.assigns
+
+    socket
+    |> assign(highscore: Targets.get_user_highscore(assigns.target.id, assigns.current_user.id))
+    |> assign(players_count: Targets.count_players(assigns.target.id))
+    |> assign(success_rate: Targets.get_success_rate(assigns.target.id))
+    |> assign(submission_count: Targets.count_submissions(assigns.target.id))
+    |> assign(
+      user_submission_count: Targets.count_submissions(assigns.target.id, assigns.current_user.id)
+    )
+  end
+
+  defp maybe_congratulate_user(
+         %{
+           assigns: %{
+             score: %{result: 1.0},
+             user_submission: %Submission{congratulated: false} = submission
+           }
+         } = socket
+       ) do
     {:ok, submission} = Targets.update_submission(submission, %{congratulated: true})
 
     socket
@@ -157,7 +179,7 @@ defmodule CssClashWeb.Components.Target.Display do
     |> assign(submission: submission)
   end
 
-  def maybe_congratulate_user(socket), do: socket
+  defp maybe_congratulate_user(socket), do: socket
 
   attr :id, :string, required: false
 
@@ -168,10 +190,10 @@ defmodule CssClashWeb.Components.Target.Display do
     <div>
       <div
         id={"target-display-#{@current_user.id}"}
-        class="flex justify-between gap-4"
+        class="flex justify-between gap-4 mx-4"
         phx-hook="TargetDisplayHook"
       >
-        <div class="grow flex flex-col h-[80vh] overflow-hidden min-w-[250px] max-w-[750px]">
+        <div class="grow flex flex-col h-[90vh] overflow-hidden min-w-[250px]">
           <.editor
             title={dgettext("game_display", "html_editor")}
             type="html"
@@ -180,14 +202,50 @@ defmodule CssClashWeb.Components.Target.Display do
             readonly={@readonly}
           />
           <.editor
+            class="mt-4"
             title={dgettext("game_display", "css_editor")}
             type="css"
             initial_content={@initial_css}
             user_id={@current_user.id}
             readonly={@readonly}
           />
+          <div class="flex flex-col gap-4 w-full mt-4">
+            <.stats_display
+              score={@score}
+              players_count={@players_count}
+              user_submission_count={@user_submission_count}
+              submission_count={@submission_count}
+              highscore={@highscore}
+              success_rate={@success_rate}
+            />
+
+            <div class="flex gap-2 justify-center">
+              <.button
+                variant="primary"
+                disabled={@score != nil && (@score.loading || @score.result == 1.0)}
+                phx-click={JS.dispatch("css_clash:submit", to: "#target-display-#{@current_user.id}")}
+              >
+                <%= if @score && @score.loading do %>
+                  <span class="me-2">{dgettext("game_display", "working")}</span>
+                  <.spinner />
+                <% else %>
+                  <span class="me-2">{dgettext("game_display", "submit")}</span>
+                  <.icon name="hero-paper-airplane-solid" class="-rotate-45 -translate-y-0.5" />
+                <% end %>
+              </.button>
+              <.button
+                disabled={!@score || @score.result != 1.0}
+                variant="secondary"
+                phx-click="reset"
+                phx-target={@myself}
+              >
+                {dgettext("game_display", "reset")}
+                <.icon name="hero-sparkles" class="size-6" />
+              </.button>
+            </div>
+          </div>
         </div>
-        <div>
+        <div class="shrink-0 min-w-[600px]">
           <.document_render
             unique_id={@current_user.id}
             target={@target}
