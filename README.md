@@ -50,8 +50,10 @@ A game where you clash with style!
 - [X] Accounts (with score tracking)
 - [X] Select between different targets
 - [ ] Per target first completion leaderboards
+- [ ] Target creation page
 
 ### Extra Gameplay modes
+- [ ] Duel -> FFA up to 8 players (with lobby)
 - [ ] Blind mode (only one submit, no feedback, only original image analysis)
 - [ ] battles royale mode where players race against each other to recreate the image
 - [ ] 3v3 battles where players relay the previous document
