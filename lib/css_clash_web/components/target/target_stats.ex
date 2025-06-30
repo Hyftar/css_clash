@@ -12,25 +12,29 @@ defmodule CssClashWeb.Components.Target.TargetStats do
 
   def stats_display(assigns) do
     ~H"""
-    <div class="grid grid-cols-1 xl:grid-cols-2 gap-2">
-      <.stats_card title_class="text-sm">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-2">
+      <.stats_card class="hidden md:block" title_class="text-sm">
+        <:icon><.icon name="hero-globe-alt" class="size-8" /></:icon>
         <:title>{dgettext("game_display", "submission_count")}</:title>
         {@submission_count}
       </.stats_card>
 
-      <.stats_card title_class="text-sm">
+      <.stats_card class="hidden md:block" title_class="text-sm">
+        <:icon><.icon name="hero-paper-airplane" class="size-8" /></:icon>
+        <:title>{dgettext("game_display", "user_submission_count")}</:title>
+        {@user_submission_count}
+      </.stats_card>
+
+      <.stats_card class="hidden md:block" title_class="text-sm">
+        <:icon><.icon name="hero-presentation-chart-line" class="size-8" /></:icon>
         <:title>{dgettext("game_display", "success_rate")}</:title>
         {(@success_rate * 100) |> Float.round(2) |> :erlang.float_to_binary(decimals: 2)} %
       </.stats_card>
 
-      <.stats_card title_class="text-sm">
+      <.stats_card class="hidden md:block" title_class="text-sm">
+        <:icon><.icon name="hero-users" class="size-8" /></:icon>
         <:title>{dgettext("game_display", "players_count")}</:title>
         {@players_count}
-      </.stats_card>
-
-      <.stats_card title_class="text-sm">
-        <:title>{dgettext("game_display", "user_submission_count")}</:title>
-        {@user_submission_count}
       </.stats_card>
 
       <.score_display title={dgettext("game_display", "highscore")} score={@highscore} />
@@ -39,13 +43,12 @@ defmodule CssClashWeb.Components.Target.TargetStats do
     """
   end
 
-  attr :title_class, :string, default: ""
-  slot :inner_block, required: true
-
-  slot :title, required: true do
-  end
-
   attr :class, :string, default: ""
+  attr :title_class, :string, default: ""
+
+  slot :inner_block, required: true
+  slot :title, required: true
+  slot :icon, required: false
 
   defp stats_card(assigns) do
     ~H"""
@@ -55,10 +58,19 @@ defmodule CssClashWeb.Components.Target.TargetStats do
         @class
       ])
     }>
-      <div class={classes(["text-lg font-bold me-4", @title_class])}>
-        {render_slot(@title)}
+      <div class="flex flex-row justify-start items-center gap-4">
+        <div :if={@icon}>
+          {render_slot(@icon)}
+        </div>
+        <div>
+          <div class={classes(["text-lg font-bold me-4", @title_class])}>
+            {render_slot(@title)}
+          </div>
+          <div>
+            {render_slot(@inner_block)}
+          </div>
+        </div>
       </div>
-      {render_slot(@inner_block)}
     </div>
     """
   end
@@ -84,8 +96,15 @@ defmodule CssClashWeb.Components.Target.TargetStats do
       )
 
     ~H"""
-    <.stats_card class="xl:col-span-2">
-      <:title>{@title}</:title>
+    <div class={
+      classes([
+        "card card-border bg-base-200 border-base-300 flex flex-row justify-between items-center p-2",
+        "col-span-1 xl:col-span-2"
+      ])
+    }>
+      <div class="text-lg font-bold me-4">
+        {@title}
+      </div>
       <div
         class={[score_indicator_classes(@score), "radial-progress"]}
         style={"--value:#{@percentage_score}; --size:4rem;"}
@@ -103,7 +122,7 @@ defmodule CssClashWeb.Components.Target.TargetStats do
             {@percentage_score}%
         <% end %>
       </div>
-    </.stats_card>
+    </div>
     """
   end
 

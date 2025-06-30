@@ -11,7 +11,7 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n>1);\n"
 
-#: lib/css_clash_web/components/core_components.ex:421
+#: lib/css_clash_web/components/core_components.ex:418
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr "Actions"
@@ -36,7 +36,7 @@ msgstr "Quelque chose s'est mal passé !"
 msgid "We can't find the internet"
 msgstr "Nous ne pouvons pas trouver l'internet"
 
-#: lib/css_clash_web/components/core_components.ex:139
+#: lib/css_clash_web/components/core_components.ex:136
 #, elixir-autogen, elixir-format
 msgid "close"
 msgstr "fermer"

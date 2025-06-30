@@ -65,7 +65,11 @@ defmodule CssClash.MixProject do
       {:httpoison, "~> 2.2"},
       {:image, "~> 0.59.3"},
       {:uuid, "~> 1.1"},
-      {:tails, github: "rum-and-code/tails", branch: "main"}
+      {:tails, github: "rum-and-code/tails", branch: "main"},
+
+      # Datetime
+      {:timex, "~> 3.7"},
+      {:ex_cldr_dates_times, "~> 2.0"}
     ]
   end
 

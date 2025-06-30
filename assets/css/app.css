@@ -6,6 +6,13 @@
 @source "../js";
 @source "../../lib/css_clash_web";
 
+@theme {
+  --breakpoint-sm: 1000px;
+  --breakpoint-md: 1300px;
+  --breakpoint-lg: 1500px;
+  --breakpoint-xl: 1650px;
+}
+
 /* A Tailwind plugin that makes "hero-#{ICON}" classes available.
    The heroicons installation itself is managed by your mix.exs */
 @plugin "../vendor/heroicons";

@@ -4,9 +4,10 @@ defmodule CssClash.Targets.Target do
 
   schema "targets" do
     field :name, :string
-    field :image_data, :binary
+    field :image_data, :binary, redact: true
     field :colors, {:array, :string}, default: []
     field :slug, :string
+    field :user_max_score, :float, virtual: true
 
     has_many :submissions, CssClash.Targets.Submission
 

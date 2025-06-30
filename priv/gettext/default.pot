@@ -11,7 +11,7 @@
 msgid ""
 msgstr ""
 
-#: lib/css_clash_web/components/core_components.ex:421
+#: lib/css_clash_web/components/core_components.ex:418
 #, elixir-autogen, elixir-format
 msgid "Actions"
 msgstr ""
@@ -36,7 +36,7 @@ msgstr ""
 msgid "We can't find the internet"
 msgstr ""
 
-#: lib/css_clash_web/components/core_components.ex:139
+#: lib/css_clash_web/components/core_components.ex:136
 #, elixir-autogen, elixir-format
 msgid "close"
 msgstr ""

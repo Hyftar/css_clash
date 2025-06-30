@@ -16,27 +16,27 @@ msgstr ""
 msgid "color_copied_to_clipboard"
 msgstr "The color has been copied to the clipboard."
 
-#: lib/css_clash_web/components/target/display.ex:183
+#: lib/css_clash_web/components/target/display.ex:206
 #, elixir-autogen, elixir-format
 msgid "css_editor"
 msgstr "CSS Editor"
 
-#: lib/css_clash_web/components/target/display.ex:176
+#: lib/css_clash_web/components/target/display.ex:198
 #, elixir-autogen, elixir-format
 msgid "html_editor"
 msgstr "HTML Editor"
 
-#: lib/css_clash_web/components/target/document_render.ex:110
+#: lib/css_clash_web/components/target/display.ex:232
 #, elixir-autogen, elixir-format
 msgid "submit"
 msgstr "Submit"
 
-#: lib/css_clash_web/components/target/document_render.ex:107
+#: lib/css_clash_web/components/target/display.ex:229
 #, elixir-autogen, elixir-format
 msgid "working"
 msgstr "Working ..."
 
-#: lib/css_clash_web/components/target/document_render.ex:120
+#: lib/css_clash_web/components/target/display.ex:242
 #, elixir-autogen, elixir-format
 msgid "reset"
 msgstr "Reset target"
@@ -60,3 +60,33 @@ msgstr "Document"
 #, elixir-autogen, elixir-format
 msgid "target_preview"
 msgstr "Target"
+
+#: lib/css_clash_web/components/target/target_stats.ex:41
+#, elixir-autogen, elixir-format
+msgid "current_score"
+msgstr "Current score"
+
+#: lib/css_clash_web/components/target/target_stats.ex:40
+#, elixir-autogen, elixir-format
+msgid "highscore"
+msgstr "Highest score"
+
+#: lib/css_clash_web/components/target/target_stats.ex:36
+#, elixir-autogen, elixir-format
+msgid "players_count"
+msgstr "Players"
+
+#: lib/css_clash_web/components/target/target_stats.ex:18
+#, elixir-autogen, elixir-format
+msgid "submission_count"
+msgstr "Total submissions"
+
+#: lib/css_clash_web/components/target/target_stats.ex:30
+#, elixir-autogen, elixir-format
+msgid "success_rate"
+msgstr "Success rate"
+
+#: lib/css_clash_web/components/target/target_stats.ex:24
+#, elixir-autogen, elixir-format
+msgid "user_submission_count"
+msgstr "Your submissions"

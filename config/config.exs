@@ -71,6 +71,14 @@ config :logger, :default_formatter,
   format: "$time $metadata[$level] $message\n",
   metadata: [:request_id]
 
+config :css_clash, timezone: "America/Toronto"
+
+config :css_clash, CssClashWeb.Gettext, allowed_locales: ~w(fr en), default_locale: "en"
+
+config :ex_cldr,
+  default_locale: "en",
+  default_backend: CssClash.Cldr
+
 # Use Jason for JSON parsing in Phoenix
 config :phoenix, :json_library, Jason
 

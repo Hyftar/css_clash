@@ -82,12 +82,17 @@ defmodule CssClashWeb do
       # Translation
       use Gettext, backend: CssClashWeb.Gettext
 
+      # Tails
+      import Tails
       # HTML escaping functionality
       import Phoenix.HTML
       # Core UI components
       import CssClashWeb.CoreComponents
       # Target image helpers
       import CssClashWeb.Helpers.TargetImage
+
+      # DateTime Utils
+      import CssClash.Utils.DateTimeUtils
 
       # Common modules used in templates
       alias Phoenix.LiveView.JS

@@ -29,7 +29,7 @@ defmodule CssClash.SubmissionVisualizer do
         Image.open(image_data)
 
       {:ok, %{status_code: status_code, body: error_body}} ->
-        {:error, "Failed to generate image, status: #{status_code}"}
+        {:error, "Failed to generate image, status: #{status_code} -- #{error_body}"}
 
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, "HTTP request failed: #{inspect(reason)}"}

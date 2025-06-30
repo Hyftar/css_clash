@@ -14,8 +14,22 @@ defmodule CssClash.Targets do
       [%Target{}, ...]
 
   """
-  def list_targets do
-    Repo.all(Target)
+  def list_targets(user_id) do
+    user_max_scores =
+      from(
+        s in Submission,
+        where: s.user_id == ^user_id,
+        group_by: [s.target_id],
+        select: %{target_id: s.target_id, max_score: max(s.score)}
+      )
+
+    from(
+      t in Target,
+      left_join: user_max_score in subquery(user_max_scores),
+      on: t.id == user_max_score.target_id,
+      select_merge: %{user_max_score: user_max_score.max_score}
+    )
+    |> Repo.all()
   end
 
   @doc """
